@@ -1,0 +1,253 @@
+<!-- /public/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bangla Entrepreneur Life</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .game-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .hud {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .stat-bar {
+            background: rgba(0, 0, 0, 0.3);
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        
+        .stat-fill {
+            height: 100%;
+            transition: width 0.3s;
+        }
+        
+        .activities {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .activity-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: white;
+            text-align: left;
+        }
+        
+        .activity-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .activity-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .dialogue-box {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .dialogue-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .dialogue-option {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            color: white;
+            transition: background 0.3s;
+        }
+        
+        .dialogue-option:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ff6b6b;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            animation: slideIn 0.5s;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="hud">
+            <div class="stat-card">
+                <div>Day: <span id="day">1</span></div>
+                <div>Phase: <span id="phase">MORNING</span></div>
+            </div>
+            <div class="stat-card">
+                <div>Energy</div>
+                <div class="stat-bar">
+                    <div class="stat-fill" id="energy-bar" style="width: 100%; background: #4caf50;"></div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div>Money</div>
+                <div id="money">৳500</div>
+            </div>
+            <div class="stat-card">
+                <div>Stress</div>
+                <div class="stat-bar">
+                    <div class="stat-fill" id="stress-bar" style="width: 0%; background: #ff5252;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="activities" id="activities">
+            <!-- Activities will be loaded here -->
+        </div>
+        
+        <div class="dialogue-box" id="dialogue-box" style="display: none;">
+            <div id="dialogue-text"></div>
+            <div class="dialogue-options" id="dialogue-options"></div>
+        </div>
+    </div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        
+        socket.on('gameState', (stateData) => {
+            const state = JSON.parse(stateData);
+            updateUI(state);
+        });
+        
+        socket.on('event', (eventData) => {
+            showNotification(eventData.message);
+        });
+        
+        socket.on('dialogueResult', (result) => {
+            // Handle dialogue result
+            console.log('Dialogue result:', result);
+        });
+        
+        socket.on('pitchResult', (result) => {
+            if (result.success) {
+                showNotification('Pitch successful!');
+            } else {
+                showNotification('Pitch failed...');
+            }
+        });
+        
+        function updateUI(state) {
+            document.getElementById('day').textContent = state.calendar.day;
+            document.getElementById('phase').textContent = state.calendar.phase;
+            
+            // Update energy bar
+            const energyPercent = state.player.stats.energy;
+            document.getElementById('energy-bar').style.width = energyPercent + '%';
+            
+            // Update money
+            document.getElementById('money').textContent = '৳' + state.player.stats.money;
+            
+            // Update stress bar
+            const stressPercent = state.player.stats.stress;
+            document.getElementById('stress-bar').style.width = stressPercent + '%';
+            
+            // Load available activities
+            loadActivities(state.calendar.phase, state.player.location);
+        }
+        
+        function loadActivities(phase, location) {
+            const activitiesContainer = document.getElementById('activities');
+            activitiesContainer.innerHTML = '';
+            
+            // Mock activities based on phase and location
+            const availableActivities = getActivitiesForPhase(phase, location);
+            
+            availableActivities.forEach(activity => {
+                const btn = document.createElement('button');
+                btn.className = 'activity-btn';
+                btn.textContent = activity.name;
+                btn.onclick = () => selectActivity(activity.id);
+                activitiesContainer.appendChild(btn);
+            });
+        }
+        
+        function getActivitiesForPhase(phase, location) {
+            // This would be fetched from server
+            const allActivities = [
+                { id: 'attend_class', name: 'Attend Class', phase: 'MORNING', location: 'university' },
+                { id: 'tutoring_job', name: 'Tutoring Session', phase: 'AFTERNOON', location: 'university' },
+                { id: 'tea_stall', name: 'Visit Tea Stall', phase: 'EVENING', location: 'tea_stall' }
+            ];
+            
+            return allActivities.filter(a => a.phase === phase && a.location === location);
+        }
+        
+        function selectActivity(activityId) {
+            socket.emit('selectActivity', activityId);
+        }
+        
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

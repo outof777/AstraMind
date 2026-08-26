@@ -3,180 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Rise to President: Political Strategy Game</title>
+    <title>The Rise to President: Hardcore Political Sim</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- Google Fonts for Clean Bengali Support -->
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Hind Siliguri', sans-serif;
-            background: radial-gradient(circle at center, #0b0f19 0%, #030712 100%);
+            background: radial-gradient(circle at center, #070a12 0%, #020408 100%);
         }
         .glow-gold {
-            box-shadow: 0 0 25px rgba(234, 179, 8, 0.25);
+            box-shadow: 0 0 35px rgba(234, 179, 8, 0.2);
         }
         .glow-red {
-            box-shadow: 0 0 25px rgba(239, 68, 68, 0.3);
+            box-shadow: 0 0 35px rgba(239, 68, 68, 0.3);
         }
         .glass-panel {
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(234, 179, 8, 0.2);
+            background: rgba(13, 18, 30, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(234, 179, 8, 0.25);
         }
     </style>
 </head>
-<body class="text-slate-100 min-h-screen flex items-center justify-center p-4">
+<body class="text-slate-100 min-h-screen flex items-center justify-center p-2 sm:p-6">
 
-    <div class="max-w-xl w-full glass-panel rounded-2xl p-6 glow-gold transition-all duration-500">
+    <!-- Full Screen Container -->
+    <div class="w-full max-w-4xl min-h-[85vh] glass-panel rounded-3xl p-6 sm:p-10 glow-gold flex flex-col justify-between transition-all duration-500 shadow-2xl">
         
         <!-- Welcome Screen (Name & Village Input) -->
-        <div id="welcome-screen" class="text-center py-6">
-            <div class="inline-block p-3 bg-amber-950/40 border border-amber-500/40 rounded-full mb-4">
-                <span class="text-3xl">🏛️</span>
+        <div id="welcome-screen" class="my-auto text-center py-10 max-w-lg mx-auto w-full">
+            <div class="inline-block p-4 bg-amber-950/40 border border-amber-500/40 rounded-full mb-6">
+                <span class="text-4xl">🏛️</span>
             </div>
-            <h1 class="text-2xl font-bold text-amber-400 tracking-wide mb-1">গ্রামের নেতা থেকে প্রেসিডেন্ট</h1>
-            <p class="text-xs text-slate-400 mb-6">আপনার রাজনৈতিক জার্নি শুরু করুন সাধারণ নেতা হিসেবে!</p>
+            <h1 class="text-3xl sm:text-4xl font-bold text-amber-400 tracking-wide mb-2">গ্রামের নেতা থেকে প্রেসিডেন্ট</h1>
+            <p class="text-sm text-slate-300 mb-8 leading-relaxed">১০টি কঠিন বাস্তব সমস্যা সফলভাবে সমাধান করে সাধারণ নেতা থেকে দেশের সর্বোচ্চ শিখরে পৌঁছান!</p>
             
-            <div class="space-y-4 text-left max-w-sm mx-auto">
+            <div class="space-y-5 text-left">
                 <div>
-                    <label class="block text-xs text-amber-300 uppercase tracking-widest mb-1">নেতার নাম (Your Name):</label>
+                    <label class="block text-xs sm:text-sm text-amber-300 uppercase tracking-widest mb-1.5 font-semibold">আপনার নাম (Your Name):</label>
                     <input type="text" id="player-name-input" placeholder="যেমন: নাহিদ মাহমুদ" 
-                        class="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-3 text-sm text-amber-200 focus:outline-none focus:border-amber-500 transition-all">
+                        class="w-full bg-slate-950 border border-slate-700 rounded-xl px-5 py-4 text-base text-amber-200 focus:outline-none focus:border-amber-500 transition-all shadow-inner">
                 </div>
 
                 <div>
-                    <label class="block text-xs text-amber-300 uppercase tracking-widest mb-1">প্রথম গ্রামের নাম (Village Name):</label>
+                    <label class="block text-xs sm:text-sm text-amber-300 uppercase tracking-widest mb-1.5 font-semibold">প্রথম গ্রামের নাম (Village Name):</label>
                     <input type="text" id="village-name-input" placeholder="যেমন: সোনপুর গ্রাম" 
-                        class="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-3 text-sm text-amber-200 focus:outline-none focus:border-amber-500 transition-all">
+                        class="w-full bg-slate-950 border border-slate-700 rounded-xl px-5 py-4 text-base text-amber-200 focus:outline-none focus:border-amber-500 transition-all shadow-inner">
                 </div>
 
-                <button onclick="startGame()" class="w-full py-3.5 bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold text-xs uppercase tracking-widest rounded-lg cursor-pointer transition-all shadow-lg shadow-amber-900/50">
-                    রাজনীতি শুরু করুন
+                <button onclick="startGame()" class="w-full py-4 bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold text-sm uppercase tracking-widest rounded-xl cursor-pointer transition-all shadow-xl shadow-amber-900/50 mt-4">
+                    রাজনীতি শুরু করুন (मिशन शुरू)
                 </button>
             </div>
         </div>
 
         <!-- Main Game Interface (Hidden initially) -->
-        <div id="game-interface" class="hidden">
+        <div id="game-interface" class="hidden flex flex-col justify-between h-full space-y-6">
+            
             <!-- Header / Status Bar -->
-            <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-4">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-800 pb-5 gap-4">
                 <div>
-                    <h1 id="header-title" class="text-xs font-bold text-amber-400 uppercase tracking-wider">RANK: VILLAGE LEADER</h1>
-                    <p id="header-subtitle" class="text-[11px] text-slate-400">Leader: -- | Village: --</p>
+                    <h1 id="header-title" class="text-sm sm:text-base font-bold text-amber-400 uppercase tracking-wider">RANK: VILLAGE LEADER</h1>
+                    <p id="header-subtitle" class="text-xs sm:text-sm text-slate-300 mt-0.5">নেতা: -- | বেসগ্রাম: --</p>
                 </div>
-                <div id="timer-box" class="text-right">
-                    <span class="text-[10px] text-slate-400 block tracking-widest">TOTAL TIME</span>
-                    <span id="timer" class="text-xl font-bold text-red-500">120s</span>
+                <div class="flex items-center gap-6">
+                    <div class="text-left sm:text-right">
+                        <span class="text-[11px] text-slate-400 block tracking-widest">TOTAL TIME</span>
+                        <span id="timer" class="text-xl sm:text-2xl font-bold text-red-500">03:00s</span>
+                    </div>
                 </div>
             </div>
 
             <!-- Dashboard Stats -->
-            <div class="grid grid-cols-2 gap-3 mb-5">
-                <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800">
-                    <span class="text-[10px] text-slate-400 block">PUBLIC SUPPORT (পাবলিক সাপোর্ট)</span>
-                    <div class="w-full bg-slate-800 h-2.5 rounded-full mt-1.5 overflow-hidden">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800 shadow-md">
+                    <span class="text-xs text-slate-400 block font-medium mb-1">PUBLIC SUPPORT (পাবলিক সাপোর্ট)</span>
+                    <div class="w-full bg-slate-800 h-3.5 rounded-full overflow-hidden">
                         <div id="support-bar" class="bg-amber-500 h-full transition-all duration-300" style="width: 50%;"></div>
                     </div>
-                    <span id="support-text" class="text-[10px] text-amber-400 mt-1 block">50% Neutral</span>
+                    <span id="support-text" class="text-xs text-amber-400 mt-2 block font-semibold">50% Neutral (সতর্ক থাকুন)</span>
                 </div>
-                <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800 flex flex-col justify-center">
-                    <span class="text-[10px] text-slate-400 block">CURRENT STAGE (পদবী)</span>
-                    <span id="stage-display" class="text-xs font-bold text-yellow-400 mt-1">Stage 1: গ্রাম প্রধান</span>
+                <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800 flex flex-col justify-center shadow-md">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-xs text-slate-400 block font-medium">PROGRESS (সমস্যা সমাধান)</span>
+                        <span id="problem-count" class="text-xs font-bold text-amber-400">প্রশ্ন ১ / ১০</span>
+                    </div>
+                    <div class="w-full bg-slate-800 h-3.5 rounded-full overflow-hidden">
+                        <div id="progress-bar" class="bg-amber-500 h-full transition-all duration-300" style="width: 10%;"></div>
+                    </div>
+                    <span id="rank-display" class="text-xs text-slate-300 mt-2 block font-semibold">পদবী: গ্রাম প্রধান</span>
                 </div>
             </div>
 
-            <!-- Game Screen Area -->
-            <div id="game-container"></div>
+            <!-- Game Screen Area (Big Screen Dynamic Content) -->
+            <div id="game-container" class="my-auto py-4">
+                <!-- Dynamic Content Injected Here -->
+            </div>
 
             <!-- Footer Score -->
-            <div class="mt-5 pt-3 border-t border-slate-800/80 flex justify-between items-center text-xs text-slate-400">
-                <span>রাজনৈতিক পয়েন্ট: <strong id="score" class="text-white">0</strong></span>
-                <span>অবস্থা: <strong id="status-msg" class="text-green-400">অস্থিরতা চলছে</strong></span>
+            <div class="pt-4 border-t border-slate-800/80 flex flex-col sm:flex-row justify-between items-center text-sm text-slate-400 gap-2">
+                <span>রাজনৈতিক পয়েন্ট: <strong id="score" class="text-white text-base">0</strong></span>
+                <span>অবস্থা: <strong id="status-msg" class="text-amber-400">সংকট মোকাবিলা চলছে</strong></span>
             </div>
+
         </div>
 
     </div>
 
-    <!-- JavaScript Game Logic -->
+    <!-- JavaScript Game Logic with 10 Hardcore Problems -->
     <script>
-        const stages = [
+        const problems = [
             {
-                rankName: "Village Leader (গ্রাম প্রধান)",
-                levelTitle: "লেভেল ১: গ্রামের বন্যা ও রাস্তাঘাট সংকট",
-                desc: "গ্রামে হঠাৎ প্রবল বন্যা দেখা দিয়েছে। ত্রাণ তহবিলের সামান্য কিছু টাকা আছে, আবার যোগাযোগের প্রধান কাঁচা রাস্তাটিও ভেঙে গেছে। আপনি নেতা হিসেবে কী করবেন?",
-                optA: {
-                    text: "সব টাকা দিয়ে সরাসরি মানুষের মাঝে চাল-ডাল ও ত্রাণ বিতরণ করুন।",
-                    effect: "গ্রামের মানুষ খুব খুশি হলো, আপনার পপুলারিটি বেড়ে গেল! কিন্তু রাস্তা সংস্কার না হওয়ায় যাতায়াত বন্ধ রইল।",
-                    supportChange: 25,
-                    scoreAdd: 100
-                },
-                optB: {
-                    text: "ত্রাণের অর্ধেক বাঁচিয়ে দ্রুত রাস্তা মেরামতের কাজ শুরু করুন।",
-                    effect: "রাস্তা ঠিক হলো বটে, কিন্তু ত্রাণ কম পাওয়ায় কিছু ক্ষুধার্ত মানুষ আপনার ওপর ক্ষিপ্ত হলো।",
-                    supportChange: 10,
-                    scoreAdd: 150
-                }
+                id: 1,
+                rank: "Village Leader (গ্রাম প্রধান)",
+                title: "সমস্যা ১: গ্রামের বন্যা ও ত্রাণ দুর্নীতি",
+                desc: "গ্রামে আকস্মিক বন্যায় তলিয়ে গেছে নিম্নাঞ্চল। ত্রাণ তহবিলের যে টাকা এসেছে, ইউপি মেম্বার তার অর্ধেক আত্মসাৎ করতে চাচ্ছে। আপনি কী করবেন?",
+                optA: { text: "মেম্বারকে হাতেনাতে ধরে দুর্নীতিবাজদের বিরুদ্ধে শাস্তিমূলক ব্যবস্থা নিন।", support: 15, score: 100, effect: "সততার প্রশংসা চারদিকে ছড়িয়ে পড়ল, মানুষ আপনার পক্ষে গেল!" },
+                optB: { text: "ঝামেলা এড়াতে মেম্বারের সাথে সমঝোতা করে বাকি ত্রাণ বিতরণ করুন।", support: -20, score: 40, effect: "ত্রাণ চুরির দায়ে সাধারণ মানুষ আপনার ওপর ক্ষিপ্ত হলো।" }
             },
             {
-                rankName: "District Mayor (জেলা মেয়র)",
-                levelTitle: "লেভেল ২: জেলার ময়লা-আবর্জনা ও সিন্ডিকেট সমস্যা",
-                desc: "এবার আপনি পুরো জেলার মেয়র নির্বাচিত হয়েছেন। শহরের বড় বাজার এলাকায় ময়লার স্তূপ জমে মহামারী ছড়াচ্ছে, কিন্তু পরিচ্ছন্নতা ঠিকাদার সিন্ডিকেট অতিরিক্ত বাজেট চাচ্ছে।",
-                optA: {
-                    text: "সিন্ডিকেটের দাবি মেনে অতিরিক্ত বাজেট পাশ করে দিন।",
-                    effect: "শহর পরিচ্ছন্ন হলো, কিন্তু দুর্নীতির দায়ে মিডিয়ায় আপনার নামে সমালোচনা শুরু হলো।",
-                    supportChange: -15,
-                    scoreAdd: 180
-                },
-                optB: {
-                    text: "সিন্ডিকেট ভেঙে যুবসমাজকে সাথে নিয়ে নিজেই পরিচ্ছন্নতা অভিযান চালান।",
-                    effect: "তরুণ সমাজ আপনার পক্ষে চলে এলো এবং দারুণ পপুলারিটি পেলেন!",
-                    supportChange: 30,
-                    scoreAdd: 250
-                }
+                id: 2,
+                rank: "Village Leader (গ্রাম প্রধান)",
+                title: "সমস্যা ২: কাঁচা রাস্তার বেহাল দশা",
+                desc: "বর্ষায় বাজারের প্রধান রাস্তাটি সম্পূর্ণ কাদা ও গর্তে ভরে গেছে। কৃষকরা তাদের ফসল বাজারে আনতে পারছে না। বাজেট খুব কম।",
+                optA: { text: "জনগণকে সাথে নিয়ে স্বেচ্ছাশ্রমে নিজে দাঁড়িয়ে থেকে রাস্তা ইট-বালি দিয়ে মেরামত করুন।", support: 20, score: 120, effect: "জনগণের হৃদয়ে আপনার স্থান পাকা হলো!" },
+                optB: { text: "ঠিকাদারকে নিম্নমানের কাজ করার অনুমতি দিয়ে নিজে কমিশন নিয়ে নিন।", support: -30, score: 30, effect: "প্রথম বৃষ্টিতেই রাস্তা ধসে পড়ল, পাবলিক বেদম চটে গেল।" }
             },
             {
-                rankName: "Minister (কেন্দ্রীয় মন্ত্রী)",
-                levelTitle: "লেভেল ৩: বিদ্যুৎ ও জ্বালানি সংকট",
-                desc: "জাতীয় মন্ত্রিত্ব পেয়ে গেছেন! দেশজুড়ে তীব্র বিদ্যুৎ সংকট চলছে। বড় শিল্প কারখানায় গ্যাস দেব নাকি সাধারণ জনগণের বাসায় বিদ্যুৎ সরবরাহ চালু রাখব?",
-                optA: {
-                    text: "কারখানাগুলো বন্ধ রেখে সাধারণ মানুষের ঘরে বিদ্যুৎ সচল রাখুন।",
-                    effect: "সাধারণ জনগণ স্বস্তি পেল, কিন্তু শিল্প মালিকরা ধর্মঘট ডাকায় অর্থনীতিতে ধস নামল!",
-                    supportChange: -20,
-                    scoreAdd: 300
-                },
-                optB: {
-                    text: "জনগণের লোডশেডিং বাড়িয়ে শিল্প কারখানা চালু রাখুন।",
-                    effect: "অর্থনীতি বাঁচল, কিন্তু তীব্র গরমে পাবলিকের ক্ষোভ আপনার দিকে ফেটে পড়ল।",
-                    supportChange: -25,
-                    scoreAdd: 320
-                }
+                id: 3,
+                rank: "District Mayor (জেলা মেয়র)",
+                title: "সমস্যা ৩: জেলার যানজট ও ফুটপাত দখল",
+                desc: "মেয়র নির্বাচিত হওয়ার পর দেখলেন শহরের মূল বাণিজ্যিক এলাকার ফুটপাতগুলো অবৈধ হকারদের দখলে। যানজটে মানুষ অতিষ্ঠ।",
+                optA: { text: "কঠোর হাতে উচ্ছেদ অভিযান চালিয়ে ফুটপাত দখলমুক্ত করুন।", support: -15, score: 150, effect: "হকাররা বেকার হওয়ায় আন্দোলন শুরু করল, তবে সাধারণ নাগরিক খুশি।" },
+                optB: { text: "হকারদের কাছ থেকে নিয়মিত মাসোহারা (ঘুষ) নিয়ে চুপচাপ থাকুন।", support: -40, score: 20, effect: "মিডিয়ায় দুর্নীতির খবর প্রকাশ হওয়ায় আপনার পপুলারিটি ধস নামল।" }
             },
             {
-                rankName: "Presidential Candidate (প্রেসিডেন্ট পদপ্রার্থী)",
-                levelTitle: "লেভেল ৪: চূড়ান্ত নির্বাচন ও গ্র্যান্ড ফিনালে",
-                desc: "আর মাত্র এক ধাপ বাকি প্রেসিডেন্টের মসনদ! বিরোধী দল আপনার বিরুদ্ধে একটি বিশাল কেলেঙ্কারির মিথ্যা প্রোপাগাণ্ডা ছড়িয়েছে। কীভাবে মোকাবিলা করবেন?",
-                optA: {
-                    text: "টাকা দিয়ে মিডিয়া কিনে অপপ্রচার ধামাচাপা দেওয়ার চেষ্টা করুন।",
-                    effect: "সাময়িকভাবে রক্ষা পেলেন, কিন্তু গোপনে তথ্য ফাঁস হওয়ায় দেশজুড়ে তুমুল আন্দোলন শুরু হলো।",
-                    supportChange: -35,
-                    scoreAdd: 400
-                },
-                optB: {
-                    text: "সরাসরি লাইভে এসে সমস্ত প্রমাণসহ জাতির সামনে সত্য প্রকাশ করুন।",
-                    effect: "আপনার সততা দেখে পুরো দেশের মানুষ মুগ্ধ হলো এবং হিউজ ভোরে জয়ী হলেন!",
-                    supportChange: 40,
-                    scoreAdd: 500
-                }
+                id: 4,
+                rank: "District Mayor (জেলা মেয়র)",
+                title: "সমস্যা ৪: জেলার বর্জ্য ব্যবস্থাপনা সংকট",
+                desc: "শহরের ময়লা ফেলার কোনো ডাম্পিং স্টেশন নেই। প্রভাবশালী এক নেতার জমিতে ময়লা ফেলায় তিনি মামলা করার হুমকি দিচ্ছেন।",
+                optA: { text: "আইনি লড়াইয়ে না গিয়ে নেতার সাথে সমঝোতা করে অন্য দূরে আধুনিক রিসাইক্লিং প্ল্যান্ট করুন।", support: 15, score: 180, effect: "পরিবেশবান্ধব উদ্যোগে জেলার সুনাম চারদিকে ছড়িয়ে পড়ল।" },
+                optB: { text: "ক্ষমতা দেখিয়ে জোরপূর্বক নেতার জমিতেই ময়লা ফেলতে থাকুন।", support: -25, score: 50, effect: "রাজনৈতিক দ্বন্দ্ব চরমে পৌঁছাল এবং আইনশৃঙ্খলা অবনতি হলো।" }
+            },
+            {
+                id: 5,
+                rank: "Minister (কেন্দ্রীয় মন্ত্রী)",
+                title: "সমস্যা ৫: বিদ্যুৎ ও লোডশেডিংয়ের মহামারী",
+                desc: "কেন্দ্রীয় জ্বালানি মন্ত্রীর দায়িত্বে আসার পর দেশজুড়ে তীব্র গরমে ২৪ ঘণ্টার মধ্যে ১৮ ঘণ্টাই লোডশেডিং হচ্ছে। শিল্প কারখানায় উৎপাদন বন্ধ।",
+                optA: { text: "জরুরি ভিত্তিতে বিদেশ থেকে কস্টলি কয়লা আমদানি করে বিদ্যুৎ সরবরাহ স্বাভাবিক করুন।", support: 25, score: 220, effect: "জনগণ স্বস্তি পেল, অর্থনীতি আবার সচল হলো।" },
+                optB: { text: "বাজেট বাঁচানোর অজুহাতে লোডশেডিং আরও বাড়িয়ে দিন।", support: -35, score: 40, effect: "জনগণ রাস্তায় নেমে মন্ত্রালয় ঘেরাও করল!" }
+            },
+            {
+                id: 6,
+                rank: "Minister (কেন্দ্রীয় মন্ত্রী)",
+                title: "সমস্যা ৬: শিক্ষক নিয়োগে মেধা বনাম কোটা",
+                desc: "প্রাথমিক ও মাধ্যমিক শিক্ষক নিয়োগে বড় ধরনের কোটা সংস্কারের আন্দোলন চলছে। মন্ত্রী হিসেবে আপনার ওপর রাজনৈতিক মহলের প্রচণ্ড চাপ।",
+                optA: { text: "রাজনৈতিক সুপারিশ ও কোটা বাতিল করে পুরোপুরি মেধাতালিকা অনুযায়ী শিক্ষক নিয়োগ দিন।", support: 30, score: 250, effect: "শিক্ষিত তরুণ সমাজ ও মেধাবীরা আপনার বিশাল ভক্ত হয়ে গেল!" },
+                optB: { text: "দলীয় নেতাকর্মী ও মন্ত্রীর আত্মীয়দের কোটায় চাকরি দিয়ে দিন।", support: -45, score: 30, effect: "দেশব্যাপী তুমুল ছাত্র আন্দোলন ও কোন্দল শুরু হলো।" }
+            },
+            {
+                id: 7,
+                rank: "Prime Minister Candidate (প্রধানমন্ত্রী পদপ্রার্থী)",
+                title: "সমস্যা ৭: শেয়ার বাজার কেলেঙ্কারি ও সিন্ডিকেট",
+                desc: "বিরোধী পক্ষের কিছু ব্যবসায়ী সিন্ডিকেট মিলে রাতের মধ্যে নিত্যপ্রয়োজনীয় জিনিসপত্রের দাম দ্বিগুণ করে দিয়েছে। সাধারণ মানুষ অনাহারে আছে।",
+                optA: { text: "সিন্ডিকেটের প্রধান নেতাদের গ্রেফতার করে কঠোর আইনি ব্যবস্থা নিন এবং ওপেন মার্কেট সেল শুরু করুন।", support: 25, score: 300, effect: "বাজার নিয়ন্ত্রণে এল এবং গরিব মানুষের আশীর্বাদ পেলেন।" },
+                optB: { text: "ব্যবসায়ীদের সাথে সিক্রেট মিটিং করে কমিশন নিয়ে দাম অপরিবর্তিত রাখুন।", support: -50, score: 20, effect: "গণবিক্ষোভে আপনার রাজনৈতিক ক্যারিয়ার ধ্বংসের মুখে!" }
+            },
+            {
+                id: 8,
+                rank: "Prime Minister Candidate (প্রধানমন্ত্রী পদপ্রার্থী)",
+                title: "সমস্যা ৮: মেগা প্রজেক্টে দুর্নীতির অভিযোগ",
+                desc: "দেশের সবচেয়ে বড় রূপপুর মেগা নিউক্লিয়ার প্রজেক্টের বাজেট তিনগুণ বাড়িয়ে দেওয়ার জন্য আন্তর্জাতিক ঠিকাদাররা আপনাকে বিশাল ঘুষ অফার করছে।",
+                optA: { text: "ঘুষের প্রস্তাব প্রত্যাখ্যান করে দুর্নীতি দমন কমিশন (ACC) দিয়ে তদন্ত করান।", support: 20, score: 350, effect: "আন্তর্জাতিক মহলে আপনার সততার খ্যাতি ছড়িয়ে পড়ল।" },
+                optB: { text: "অফার গ্রহণ করে সুইস ব্যাংকে টাকা পাচার করে প্রজেক্ট পাশ করিয়ে দিন।", support: -60, score: 10, effect: "সাংবাদিকদের অনুসন্ধানে দুর্নীতির চাঞ্চল্যকর তথ্য ফাঁস হয়ে গেল!" }
+            },
+            {
+                id: 9,
+                rank: "Presidential Finalist (প্রেসিডেন্ট ফাইনালিস্ট)",
+                title: "সমস্যা ৯: জাতীয় সীমান্ত নিরাপত্তা ও বহিঃশত্রু",
+                desc: "দেশের পূর্ব সীমান্তে হঠাৎ করে প্রতিবেশী দেশের সামরিক বাহিনী আগ্রাসন চালিয়ে একটি সীমান্ত পোস্ট দখল করে নিয়েছে। যুদ্ধ নাকি কূটনীতি?",
+                optA: { text: "আন্তর্জাতিক কূটনৈতিক মহলে জোরালো লবিং করে এবং সামরিক প্রস্তুতি নিয়ে আলোচনার মাধ্যমে জমি উদ্ধার করুন।", support: 30, score: 400, effect: "রক্তপাত ছাড়াই অত্যন্ত বুদ্ধিমত্তার সাথে দেশের সার্বভৌমত্ব রক্ষা করলেন!" },
+                optB: { text: "ভয়ে তাৎক্ষণিকভাবে নতজানু হয়ে ওদের কাছে দেশের সীমানা লিজ দিয়ে দিন।", support: -70, score: -50, effect: "দেশপ্রেমিক জনগণ ও সেনাবাহিনী আপনাকে দেশদ্রোহী ঘোষণা করল!" }
+            },
+            {
+                id: 10,
+                rank: "Presidential Grand Finale (সর্বোচ্চ শিখর)",
+                title: "সমস্যা ১০: সংবিধান সংস্কার ও শেষ পরীক্ষা",
+                desc: "প্রেসিডেন্ট হিসেবে শপথ নেওয়ার আগে জাতির সংবিধান চিরতরে সংশোধন করে আজীবন ক্ষমতা কুক্ষিগত করার একটা সুযোগ এসেছে, নাকি গণতন্ত্র রক্ষা করবেন?",
+                optA: { text: "ক্ষমতার লোভ সংবরণ করে স্বচ্ছ গণতান্ত্রিক নির্বাচন দিয়ে সত্যিকারের জনগণের প্রেসিডেন্ট হন।", support: 40, score: 500, effect: "ইতিহাসে স্বর্ণাক্ষরে আপনার নাম লেখা হলো! আপনি সর্বকালের সেরা প্রেসিডেন্ট!" },
+                optB: { text: "সংবিধান বদলে নিজেকে আজীবন একচ্ছত্র আধিপত্যের স্বৈরশাসক ঘোষণা করুন।", support: -80, score: 0, effect: "জনগণের ক্ষোভে গণঅভুত্থান ঘটে এক রাতেই পতন ঘটল!" }
             }
         ];
 
         let playerName = "";
         let villageName = "";
-        let currentStageIndex = 0;
+        let currentIndex = 0;
         let publicSupport = 50;
         let score = 0;
-        let timeLeft = 120; // 2 minutes total timer
+        let timeLeft = 180; // 3 minutes total timer for 10 questions
         let timerInterval;
         let gameActive = false;
 
@@ -189,7 +214,9 @@
         const timerEl = document.getElementById('timer');
         const supportBar = document.getElementById('support-bar');
         const supportText = document.getElementById('support-text');
-        const stageDisplay = document.getElementById('stage-display');
+        const progressBar = document.getElementById('progress-bar');
+        const problemCount = document.getElementById('problem-count');
+        const rankDisplay = document.getElementById('rank-display');
         const gameContainer = document.getElementById('game-container');
         const scoreEl = document.getElementById('score');
         const statusMsg = document.getElementById('status-msg');
@@ -211,18 +238,18 @@
             welcomeScreen.classList.add('hidden');
             gameInterface.classList.remove('hidden');
 
-            currentStageIndex = 0;
+            currentIndex = 0;
             publicSupport = 50;
             score = 0;
-            timeLeft = 120;
+            timeLeft = 180;
             gameActive = true;
 
-            updateSupportUI();
+            updateUI();
             statusMsg.textContent = "সংকট মোকাবিলা চলছে";
             statusMsg.className = "text-amber-400";
 
             startTimer();
-            renderStage();
+            renderProblem();
         }
 
         function startTimer() {
@@ -232,57 +259,72 @@
                 timeLeft--;
                 let min = Math.floor(timeLeft / 60);
                 let sec = timeLeft % 60;
-                timerEl.textContent = `${min}:${sec < 10 ? '0' : ''}${sec}s`;
+                timerEl.textContent = `${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}s`;
 
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
-                    endGame("সময় ফুরিয়ে গেছে! রাজনৈতিক সংকটে পড়ে আপনি ক্ষমতাচ্যুত হয়েছেন।");
+                    endGame("সময় ফুরিয়ে গেছে! নির্দিষ্ট সময়ের মধ্যে সব সমস্যা সমাধান করতে না পারায় রাজনৈতিক পতন ঘটেছে।");
                 }
             }, 1000);
         }
 
-        function updateSupportUI() {
+        function updateUI() {
             if (publicSupport > 100) publicSupport = 100;
             if (publicSupport < 0) publicSupport = 0;
 
             supportBar.style.width = publicSupport + '%';
+            
+            // Progress Calculation
+            let progressPercent = ((currentIndex) / problems.length) * 100;
+            progressBar.style.width = progressPercent + '%';
+            problemCount.textContent = `প্রশ্ন ${currentIndex + 1} / ${problems.length}`;
+
             if (publicSupport >= 70) {
-                supportText.textContent = publicSupport + '% অত্যন্ত জনপ্রিয় (Strong)';
-                supportText.className = "text-[10px] text-green-400 mt-1 block";
-            } else if (publicSupport >= 35) {
+                supportText.textContent = publicSupport + '% শক্তিশালী সমর্থন (Strong)';
+                supportText.className = "text-xs text-green-400 mt-2 block font-semibold";
+            } else if (publicSupport >= 30) {
                 supportText.textContent = publicSupport + '% মাঝারি অবস্থা (Stable)';
-                supportText.className = "text-[10px] text-amber-400 mt-1 block";
+                supportText.className = "text-xs text-amber-400 mt-2 block font-semibold";
             } else {
-                supportText.textContent = publicSupport + '% চরম ঝুঁকিপূর্ণ (Risky)';
-                supportText.className = "text-[10px] text-red-500 mt-1 block";
+                supportText.textContent = publicSupport + '% চরম ঝুঁকিপূর্ণ (Danger!)';
+                supportText.className = "text-xs text-red-500 mt-2 block font-semibold";
             }
         }
 
-        function renderStage() {
-            if (currentStageIndex >= stages.length) {
+        function renderProblem() {
+            // Check if user failed (Support below 15%)
+            if (publicSupport <= 15) {
                 gameActive = false;
                 clearInterval(timerInterval);
-                endGame(`অভিনন্দন ${playerName}! সফলভাবে সব ধাপ পেরিয়ে আপনি এখন দেশের সর্বোচ্চ শিখরে—মহামান্য **প্রেসিডেন্ট**! 🏛️🎉`);
+                endGame(`পাবলিক সাপোর্ট ১৫%-এর নিচে নেমে গেছে! জনগণের তীব্র গণবিক্ষোভের মুখে ${playerName} ক্ষমতাচ্যুত হয়েছেন।`);
                 return;
             }
 
-            const stg = stages[currentStageIndex];
-            headerTitle.textContent = `RANK: ${stg.rankName.split(' ')[0]} LRP`;
-            stageDisplay.textContent = `Stage ${currentStageIndex + 1}: ${stg.rankName}`;
+            if (currentIndex >= problems.length) {
+                gameActive = false;
+                clearInterval(timerInterval);
+                endGame(`অসাধারণ সাফল্য ${playerName}! ১০টি জটিল রাজনৈতিক বাধা পেরিয়ে আপনি এখন দেশের সর্বোচ্চ শিখরে—মহামান্য **প্রেসিডেন্ট**! 🏛️👑`);
+                return;
+            }
+
+            const pblm = problems[currentIndex];
+            headerTitle.textContent = `RANK: ${pblm.rank.toUpperCase()}`;
+            rankDisplay.textContent = `পদবী: ${pblm.rank}`;
+            updateUI();
 
             gameContainer.innerHTML = `
-                <div class="bg-slate-950/90 p-4 rounded-xl border border-slate-800/80 mb-4 shadow-inner">
-                    <h2 class="text-xs font-bold text-amber-400 mb-2 uppercase tracking-wide">${stg.levelTitle}</h2>
-                    <p class="text-xs text-slate-300 leading-relaxed">${stg.desc}</p>
+                <div class="bg-slate-950/90 p-6 rounded-2xl border border-slate-800 mb-6 shadow-inner">
+                    <h2 class="text-base sm:text-lg font-bold text-amber-400 mb-3">${pblm.title}</h2>
+                    <p class="text-sm sm:text-base text-slate-200 leading-relaxed">${pblm.desc}</p>
                 </div>
-                <div class="space-y-3">
-                    <button onclick="makeChoice('A')" class="w-full text-left p-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-xs transition-all cursor-pointer group shadow-md">
-                        <strong class="text-amber-400 block mb-1 group-hover:text-amber-300">[পদ্ধতি ১]</strong> 
-                        <span class="text-slate-300">${stg.optA.text}</span>
+                <div class="space-y-4">
+                    <button onclick="makeChoice('A')" class="w-full text-left p-4 sm:p-5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-sm sm:text-base transition-all cursor-pointer group shadow-lg flex items-start gap-3">
+                        <span class="text-amber-400 font-bold">[পদ্ধতি ১]</span> 
+                        <span class="text-slate-200 group-hover:text-white leading-relaxed">${pblm.optA.text}</span>
                     </button>
-                    <button onclick="makeChoice('B')" class="w-full text-left p-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-xs transition-all cursor-pointer group shadow-md">
-                        <strong class="text-yellow-400 block mb-1 group-hover:text-yellow-300">[পদ্ধতি ২]</strong> 
-                        <span class="text-slate-300">${stg.optB.text}</span>
+                    <button onclick="makeChoice('B')" class="w-full text-left p-4 sm:p-5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-sm sm:text-base transition-all cursor-pointer group shadow-lg flex items-start gap-3">
+                        <span class="text-yellow-400 font-bold">[পদ্ধতি ২]</span> 
+                        <span class="text-slate-200 group-hover:text-white leading-relaxed">${pblm.optB.text}</span>
                     </button>
                 </div>
             `;
@@ -290,60 +332,52 @@
 
         function makeChoice(choice) {
             if (!gameActive) return;
-            const stg = stages[currentStageIndex];
-            const selectedOpt = choice === 'A' ? stg.optA : stg.optB;
+            const pblm = problems[currentIndex];
+            const selectedOpt = choice === 'A' ? pblm.optA : pblm.optB;
 
-            publicSupport += selectedOpt.supportChange;
-            score += selectedOpt.scoreAdd;
+            publicSupport += selectedOpt.support;
+            score += selectedOpt.score;
 
-            updateSupportUI();
+            updateUI();
             scoreEl.textContent = score;
 
             gameContainer.innerHTML = `
-                <div class="bg-slate-950/95 p-5 rounded-xl border border-slate-800 text-center shadow-lg">
-                    <h3 class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2">📢 রাজনৈতিক ফলাফল</h3>
-                    <p class="text-xs text-slate-300 leading-relaxed mb-4">${selectedOpt.effect}</p>
-                    <button onclick="nextStep()" class="px-6 py-2.5 bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold text-xs uppercase tracking-widest rounded-lg cursor-pointer transition-all shadow-lg">
-                        পরবর্তী রাজনৈতিক ধাপে যান ->
+                <div class="bg-slate-950/95 p-8 rounded-2xl border border-slate-800 text-center shadow-2xl my-auto">
+                    <h3 class="text-sm font-bold text-amber-400 uppercase tracking-widest mb-3">📢 রাজনৈতিক ফলাফল ও প্রভাব</h3>
+                    <p class="text-base text-slate-200 leading-relaxed mb-6">${selectedOpt.effect}</p>
+                    <button onclick="nextStep()" class="px-8 py-3.5 bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold text-sm uppercase tracking-widest rounded-xl cursor-pointer transition-all shadow-xl">
+                        পরবর্তী সমস্যায় যান ->
                     </button>
                 </div>
             `;
-
-            if (publicSupport <= 0) {
-                gameActive = false;
-                clearInterval(timerInterval);
-                setTimeout(() => {
-                    endGame(`পাবলিক সাপোর্ট শূন্যে নেমে গেছে! জনগণের গণবিক্ষোভের মুখে ${playerName} ক্ষমতাচ্যুত হয়েছেন।`);
-                }, 1200);
-            }
         }
 
         function nextStep() {
             if (!gameActive) return;
-            currentStageIndex++;
-            renderStage();
+            currentIndex++;
+            renderProblem();
         }
 
         function endGame(message) {
             gameActive = false;
             
-            let isWin = publicSupport > 0 && currentStageIndex >= stages.length;
+            let isWin = publicSupport > 15 && currentIndex >= problems.length;
             let badgeColor = isWin ? "text-amber-400 border-amber-900/50 glow-gold" : "text-red-500 border-red-900/50 glow-red";
 
             gameContainer.innerHTML = `
-                <div class="bg-slate-950 p-5 rounded-xl border ${badgeColor} text-center">
-                    <h2 class="text-base font-bold uppercase tracking-widest mb-2 ${isWin ? 'text-amber-400' : 'text-red-500'}">
-                        ${isWin ? '👑 রাজনৈতিক বিজয়!' : '❌ গেম ওভার (পতন)'}
+                <div class="bg-slate-950 p-8 rounded-2xl border ${badgeColor} text-center my-auto">
+                    <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-widest mb-3 ${isWin ? 'text-amber-400' : 'text-red-500'}">
+                        ${isWin ? '👑 চূড়ান্ত রাজনৈতিক বিজয়!' : '❌ গেম ওভার (ক্ষমতাচ্যুত)'}
                     </h2>
-                    <p class="text-xs text-slate-300 leading-relaxed mb-3">${message}</p>
-                    <div class="p-3 bg-slate-900/80 rounded-lg border border-slate-800 mb-4 text-left">
-                        <p class="text-[11px] text-slate-400">নেতার নাম: <strong class="text-white">${playerName}</strong></p>
-                        <p class="text-[11px] text-slate-400">বেসগ্রাম: <strong class="text-white">${villageName}</strong></p>
-                        <p class="text-[11px] text-slate-400">টোটাল রাজনৈতিক পয়েন্ট: <strong class="text-white">${score}</strong></p>
-                        <p class="text-[11px] text-slate-400">শেষ পাবলিক সাপোর্ট: <strong class="text-white">${publicSupport}%</strong></p>
+                    <p class="text-sm sm:text-base text-slate-200 leading-relaxed mb-6">${message}</p>
+                    <div class="p-5 bg-slate-900/90 rounded-xl border border-slate-800 mb-6 text-left max-w-md mx-auto space-y-2">
+                        <p class="text-xs sm:text-sm text-slate-300">নেতার নাম: <strong class="text-white">${playerName}</strong></p>
+                        <p class="text-xs sm:text-sm text-slate-300">বেসগ্রাম: <strong class="text-white">${villageName}</strong></p>
+                        <p class="text-xs sm:text-sm text-slate-300">অর্জিত পয়েন্ট: <strong class="text-white">${score}</strong></p>
+                        <p class="text-xs sm:text-sm text-slate-300">চূড়ান্ত সাপোর্ট: <strong class="text-white">${publicSupport}%</strong></p>
                     </div>
-                    <button onclick="resetToWelcome()" class="px-6 py-2.5 bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold text-xs uppercase tracking-widest rounded-lg cursor-pointer transition-all shadow-lg">
-                        নতুন করে প্রেসিডেন্ট হতে আবার খেলুন
+                    <button onclick="resetToWelcome()" class="px-8 py-3.5 bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold text-sm uppercase tracking-widest rounded-xl cursor-pointer transition-all shadow-xl">
+                        প্রেসিডেন্ট হতে আবার নতুন করে খেলুন
                     </button>
                 </div>
             `;

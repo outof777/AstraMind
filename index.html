@@ -1,253 +1,718 @@
-<!-- /public/index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Bangla Entrepreneur Life</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            margin: 0;
-            padding: 20px;
-        }
-        
-        .game-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 20px;
-            backdrop-filter: blur(10px);
-        }
-        
-        .hud {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .stat-card {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            padding: 10px;
-            text-align: center;
-        }
-        
-        .stat-bar {
-            background: rgba(0, 0, 0, 0.3);
-            height: 10px;
-            border-radius: 5px;
-            overflow: hidden;
-            margin-top: 5px;
-        }
-        
-        .stat-fill {
-            height: 100%;
-            transition: width 0.3s;
-        }
-        
-        .activities {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        .activity-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
-            padding: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-            color: white;
-            text-align: left;
-        }
-        
-        .activity-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-        
-        .activity-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .dialogue-box {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-        
-        .dialogue-options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .dialogue-option {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 5px;
-            padding: 10px;
-            cursor: pointer;
-            color: white;
-            transition: background 0.3s;
-        }
-        
-        .dialogue-option:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-        
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #ff6b6b;
-            color: white;
-            padding: 15px 20px;
-            border-radius: 10px;
-            animation: slideIn 0.5s;
-        }
-        
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Bangla Entrepreneur Life: Zero to Billionaire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0E3B2E;
+    --bg2:#123F31;
+    --panel:#0B2E24;
+    --paper:#F3ECD9;
+    --ink:#132420;
+    --gold:#E3A72B;
+    --gold-dim:#a8813a;
+    --red:#D14B3D;
+    --teal:#3E8E7E;
+    --line:#2A5C4A;
+    --good:#7BBF6A;
+    --bad:#D14B3D;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(227,167,43,0.06), transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(209,75,61,0.06), transparent 40%);
+    color:var(--paper);
+    font-family:'IBM Plex Sans', sans-serif;
+    min-height:100vh;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:18px 16px 60px;}
+  h1,h2,h3{font-family:'Baloo 2', sans-serif; margin:0;}
+  .title{
+    display:flex; align-items:baseline; gap:10px; justify-content:space-between;
+    border-bottom:2px dashed var(--line); padding-bottom:12px; margin-bottom:14px;
+  }
+  .title h1{font-size:1.5rem; color:var(--gold); letter-spacing:0.3px;}
+  .title .sub{font-size:0.75rem; color:var(--teal); font-family:'IBM Plex Mono',monospace;}
+
+  /* HUD */
+  .hud{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:14px;
+  }
+  .stat{
+    background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:8px 10px;
+  }
+  .stat .label{font-size:0.65rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--teal); font-family:'IBM Plex Mono',monospace;}
+  .stat .val{font-family:'Baloo 2'; font-size:1.05rem; margin-top:2px;}
+  .bar{height:5px; border-radius:3px; background:#04140F; margin-top:6px; overflow:hidden;}
+  .bar > div{height:100%;}
+  .money .val{color:var(--gold);}
+  .stress-fill{background:var(--red);}
+  .energy-fill{background:var(--good);}
+  .hunger-fill{background:var(--gold);}
+
+  .daybar{
+    display:flex; align-items:center; gap:10px; margin-bottom:16px; background:var(--panel);
+    border:1px solid var(--line); border-radius:10px; padding:10px 12px;
+  }
+  .daybar .rick{font-size:1.3rem;}
+  .phase-track{flex:1; display:flex; gap:6px;}
+  .phase-chip{
+    flex:1; text-align:center; padding:6px 4px; border-radius:8px; font-size:0.72rem;
+    font-family:'IBM Plex Mono',monospace; border:1px solid var(--line); color:#7fa89a;
+  }
+  .phase-chip.active{background:var(--gold); color:var(--ink); border-color:var(--gold); font-weight:600;}
+  .phase-chip.done{color:var(--teal); text-decoration:line-through;}
+  .daylabel{font-family:'Baloo 2'; color:var(--paper); white-space:nowrap;}
+
+  .layout{display:grid; grid-template-columns:1fr 1.6fr; gap:14px;}
+  @media (max-width:700px){ .layout{grid-template-columns:1fr;} }
+
+  .panel{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px;}
+  .panel h2{font-size:1rem; color:var(--gold); margin-bottom:10px;}
+  .panel h3{font-size:0.85rem; color:var(--teal); margin:12px 0 6px;}
+
+  .loc-list button{
+    display:block; width:100%; text-align:left; background:transparent; color:var(--paper);
+    border:1px solid var(--line); border-radius:8px; padding:9px 10px; margin-bottom:7px;
+    font-family:'IBM Plex Sans'; cursor:pointer; font-size:0.85rem;
+  }
+  .loc-list button.here{border-color:var(--gold); color:var(--gold); font-weight:600;}
+  .loc-list button:hover{border-color:var(--teal);}
+
+  .npc-here{font-size:0.72rem; color:#7fa89a; margin-top:-3px; margin-bottom:8px; font-family:'IBM Plex Mono',monospace;}
+
+  .activity{
+    border:1px solid var(--line); border-radius:9px; padding:10px 11px; margin-bottom:8px;
+    background:rgba(255,255,255,0.02);
+  }
+  .activity .a-title{font-family:'Baloo 2'; font-size:0.95rem; color:var(--paper);}
+  .activity .a-desc{font-size:0.78rem; color:#9fc2b5; margin:3px 0 7px;}
+  .a-costs{font-size:0.68rem; font-family:'IBM Plex Mono',monospace; color:var(--gold-dim); margin-bottom:7px;}
+  .btn{
+    background:var(--gold); color:var(--ink); border:none; border-radius:7px; padding:7px 12px;
+    font-family:'Baloo 2'; font-weight:700; font-size:0.82rem; cursor:pointer;
+  }
+  .btn.secondary{background:transparent; border:1px solid var(--teal); color:var(--teal);}
+  .btn.danger{background:var(--red); color:#fff;}
+  .btn:disabled{opacity:0.4; cursor:not-allowed;}
+  .btn-row{display:flex; gap:8px; flex-wrap:wrap;}
+
+  .ticker{
+    font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--ink);
+    background:var(--gold); border-radius:9px; padding:8px 10px; margin-bottom:14px;
+    border-left:5px solid var(--red);
+  }
+  .ticker b{font-family:'Baloo 2';}
+
+  .modal-bg{
+    position:fixed; inset:0; background:rgba(6,20,15,0.75); display:flex; align-items:center;
+    justify-content:center; z-index:50; padding:16px;
+  }
+  .modal{
+    background:var(--panel); border:1px solid var(--gold); border-radius:14px; padding:18px;
+    max-width:480px; width:100%; max-height:85vh; overflow-y:auto;
+  }
+  .modal h2{color:var(--gold); margin-bottom:4px;}
+  .npc-tag{font-size:0.72rem; color:var(--teal); font-family:'IBM Plex Mono',monospace; margin-bottom:10px;}
+  .dline{font-size:0.88rem; margin-bottom:12px; line-height:1.4;}
+  .opt{
+    display:block; width:100%; text-align:left; background:rgba(255,255,255,0.03); color:var(--paper);
+    border:1px solid var(--line); border-radius:8px; padding:9px 10px; margin-bottom:7px; cursor:pointer;
+    font-family:'IBM Plex Sans'; font-size:0.82rem;
+  }
+  .opt:hover{border-color:var(--gold);}
+
+  .mr-entry{border-left:3px solid var(--gold); padding:6px 10px; margin-bottom:8px; font-size:0.8rem; background:rgba(227,167,43,0.06); border-radius:0 6px 6px 0;}
+  .mr-entry .tag{font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:var(--teal);}
+
+  .log{max-height:150px; overflow-y:auto; font-size:0.76rem; font-family:'IBM Plex Mono',monospace; color:#9fc2b5;}
+  .log div{padding:3px 0; border-bottom:1px dotted var(--line);}
+
+  textarea{
+    width:100%; height:100px; background:#04140F; color:var(--paper); border:1px solid var(--line);
+    border-radius:8px; font-family:'IBM Plex Mono',monospace; font-size:0.7rem; padding:8px;
+  }
+  .row{display:flex; gap:8px; align-items:center; margin:8px 0;}
+  .row label{font-size:0.75rem; color:var(--teal); width:90px;}
+  .row input[type=range]{flex:1;}
+  .pill{display:inline-block; background:var(--line); border-radius:20px; padding:2px 9px; font-size:0.68rem; font-family:'IBM Plex Mono'; margin-left:6px;}
+  .toolbar{display:flex; justify-content:flex-end; gap:8px; margin-bottom:12px;}
+</style>
 </head>
 <body>
-    <div class="game-container">
-        <div class="hud">
-            <div class="stat-card">
-                <div>Day: <span id="day">1</span></div>
-                <div>Phase: <span id="phase">MORNING</span></div>
-            </div>
-            <div class="stat-card">
-                <div>Energy</div>
-                <div class="stat-bar">
-                    <div class="stat-fill" id="energy-bar" style="width: 100%; background: #4caf50;"></div>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div>Money</div>
-                <div id="money">৳500</div>
-            </div>
-            <div class="stat-card">
-                <div>Stress</div>
-                <div class="stat-bar">
-                    <div class="stat-fill" id="stress-bar" style="width: 0%; background: #ff5252;"></div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="activities" id="activities">
-            <!-- Activities will be loaded here -->
-        </div>
-        
-        <div class="dialogue-box" id="dialogue-box" style="display: none;">
-            <div id="dialogue-text"></div>
-            <div class="dialogue-options" id="dialogue-options"></div>
-        </div>
+<div class="wrap">
+  <div class="title">
+    <h1>🛺 Bangla Entrepreneur Life</h1>
+    <div class="sub">Zero to Billionaire — MVP Slice</div>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn secondary" onclick="openSave()">💾 Save / Load</button>
+  </div>
+
+  <div id="ticker" class="ticker"></div>
+
+  <div class="hud" id="hud"></div>
+
+  <div class="daybar">
+    <div class="rick">🛺</div>
+    <div class="daylabel" id="daylabel"></div>
+    <div class="phase-track" id="phaseTrack"></div>
+  </div>
+
+  <div class="layout">
+    <div class="panel">
+      <h2>📍 Locations</h2>
+      <div class="loc-list" id="locList"></div>
+      <h3>Market Research Log</h3>
+      <div id="mrLog"></div>
+      <h3>Event Log</h3>
+      <div class="log" id="eventLog"></div>
     </div>
-    
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-        const socket = io();
-        
-        socket.on('gameState', (stateData) => {
-            const state = JSON.parse(stateData);
-            updateUI(state);
-        });
-        
-        socket.on('event', (eventData) => {
-            showNotification(eventData.message);
-        });
-        
-        socket.on('dialogueResult', (result) => {
-            // Handle dialogue result
-            console.log('Dialogue result:', result);
-        });
-        
-        socket.on('pitchResult', (result) => {
-            if (result.success) {
-                showNotification('Pitch successful!');
-            } else {
-                showNotification('Pitch failed...');
-            }
-        });
-        
-        function updateUI(state) {
-            document.getElementById('day').textContent = state.calendar.day;
-            document.getElementById('phase').textContent = state.calendar.phase;
-            
-            // Update energy bar
-            const energyPercent = state.player.stats.energy;
-            document.getElementById('energy-bar').style.width = energyPercent + '%';
-            
-            // Update money
-            document.getElementById('money').textContent = '৳' + state.player.stats.money;
-            
-            // Update stress bar
-            const stressPercent = state.player.stats.stress;
-            document.getElementById('stress-bar').style.width = stressPercent + '%';
-            
-            // Load available activities
-            loadActivities(state.calendar.phase, state.player.location);
-        }
-        
-        function loadActivities(phase, location) {
-            const activitiesContainer = document.getElementById('activities');
-            activitiesContainer.innerHTML = '';
-            
-            // Mock activities based on phase and location
-            const availableActivities = getActivitiesForPhase(phase, location);
-            
-            availableActivities.forEach(activity => {
-                const btn = document.createElement('button');
-                btn.className = 'activity-btn';
-                btn.textContent = activity.name;
-                btn.onclick = () => selectActivity(activity.id);
-                activitiesContainer.appendChild(btn);
-            });
-        }
-        
-        function getActivitiesForPhase(phase, location) {
-            // This would be fetched from server
-            const allActivities = [
-                { id: 'attend_class', name: 'Attend Class', phase: 'MORNING', location: 'university' },
-                { id: 'tutoring_job', name: 'Tutoring Session', phase: 'AFTERNOON', location: 'university' },
-                { id: 'tea_stall', name: 'Visit Tea Stall', phase: 'EVENING', location: 'tea_stall' }
-            ];
-            
-            return allActivities.filter(a => a.phase === phase && a.location === location);
-        }
-        
-        function selectActivity(activityId) {
-            socket.emit('selectActivity', activityId);
-        }
-        
-        function showNotification(message) {
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
-        }
-    </script>
+
+    <div class="panel">
+      <h2 id="locHeader"></h2>
+      <div class="npc-here" id="npcHere"></div>
+      <div id="activities"></div>
+    </div>
+  </div>
+</div>
+
+<div id="modalRoot"></div>
+
+<script>
+/* ============ DATA ============ */
+const LOCATIONS = {
+  mess:      {name:"Mess (Home)", desc:"Your shared sublet. Cheap rice, a leaky fan, four roommates."},
+  university:{name:"University", desc:"Classes, the library steps, and the notice board of opportunity."},
+  teastall:  {name:"Chacha's Tea Stall", desc:"Where every rumor, deal, and job lead in the neighborhood starts."},
+  market:    {name:"Local Bazaar", desc:"Vendors, haggling, and the pulse of what people actually need."},
+  street:    {name:"Busy Street", desc:"Rickshaws, foot traffic, delivery gigs, and the odd surprise."}
+};
+
+const NPCS = {
+  rafiq:  {name:"Rafiq", role:"Classmate", loc:"university", emoji:"🧑‍🎓"},
+  karim:  {name:"Prof. Karim", role:"Professor", loc:"university", emoji:"👨‍🏫"},
+  nasrin: {name:"Nasrin", role:"Debate Club Lead", loc:"university", emoji:"🗣️"},
+  chacha: {name:"Chacha", role:"Tea Stall Owner", loc:"teastall", emoji:"🫖"},
+  salma:  {name:"Salma Aunty", role:"Market Vendor", loc:"market", emoji:"🥬"},
+  jamil:  {name:"Jamil Bhai", role:"Rickshaw Puller", loc:"street", emoji:"🛺"},
+  tanvir: {name:"Tanvir", role:"CS Student / Possible Cofounder", loc:"teastall", emoji:"💻"},
+  haque:  {name:"Mr. Haque", role:"Landlord", loc:"mess", emoji:"🏠"},
+};
+
+const DIALOGUES = {
+  rafiq: [
+    {id:"intro", text:"\"Bhai, exam er poreo class attend korte hobe. Tumi ki notes niyecho?\"",
+      opts:[
+        {t:"Ask about struggling students", eff:{rel:5, mr:{tag:"Education", text:"Many first-year students are quietly failing Calculus and can't afford private coaching."}}},
+        {t:"Just make small talk", eff:{rel:3}},
+      ]},
+  ],
+  karim: [
+    {id:"intro", text:"\"You've been attending regularly. Good. What brings you to my office hours?\"",
+      opts:[
+        {t:"Ask for mentorship advice", eff:{rel:6, know:{business:2}}},
+        {t:"Ask about the career fair", eff:{rel:2, flag:"careerFairKnown"}},
+      ]},
+  ],
+  nasrin: [
+    {id:"intro", text:"\"The debate club meets Thursdays. Public speaking will save you more than any textbook.\"",
+      opts:[
+        {t:"Join a practice session", eff:{rel:5, know:{communication:3}, stat:{energy:-10}}},
+        {t:"Just say hi", eff:{rel:2}},
+      ]},
+  ],
+  chacha: [
+    {id:"intro", text:"\"Ei je business student! Cha khaben? Ekhane shob khobor pawa jai.\"",
+      opts:[
+        {t:"Ask about the neighborhood's problems", eff:{rel:4, mr:{tag:"Local", text:"Rickshaw pullers waste time and fuel money searching for fares with no fixed booking system."}}},
+        {t:"Ask for a part-time job here", eff:{rel:3, flag:"teastallJobUnlocked"}},
+      ]},
+  ],
+  salma: [
+    {id:"intro", text:"\"Fresh shobji ache. Ki lagbe?\"",
+      opts:[
+        {t:"Ask about vendors' pain points", eff:{rel:4, mr:{tag:"Commerce", text:"Small vendors have no easy way to track daily sales or manage credit given to regulars."}}},
+        {t:"Just browse", eff:{rel:1}},
+      ]},
+  ],
+  jamil: [
+    {id:"intro", text:"\"Kothay jaben? Bhalo rate debo.\"",
+      opts:[
+        {t:"Chat about his day", eff:{rel:4}},
+        {t:"Ask about delivery work", eff:{rel:2, flag:"deliveryJobUnlocked"}},
+      ]},
+  ],
+  tanvir: [
+    {id:"intro", text:"\"I've been sketching a small app idea. You're business-minded — want to team up someday?\"",
+      opts:[
+        {t:"Explore a partnership", eff:{rel:6, flag:"cofounderLead"}},
+        {t:"Keep it casual for now", eff:{rel:2}},
+      ]},
+  ],
+  haque: [
+    {id:"intro", text:"\"Bhara ta mone rekho. Deri hole kintu shomossha hobe.\"",
+      opts:[
+        {t:"Reassure him", eff:{rel:3}},
+        {t:"Ask for a few days' grace", eff:{rel:-2, stat:{stress:5}}},
+      ]},
+  ],
+};
+
+/* ============ STATE ============ */
+let state = {
+  day:1, phase:0, location:"mess",
+  stats:{energy:80, hunger:15, money:400, stress:10},
+  knowledge:{business:0, marketing:0, finance:0, tech:0, communication:0},
+  reputation:{local:0, academic:0, business:0},
+  relationships:{},
+  flags:{},
+  marketResearch:[],
+  business:null,
+  ateToday:false,
+  log:["Day 1 begins. You have ৳400, a rented cot at the mess, and a plan."],
+};
+const PHASES = ["Morning","Afternoon","Evening"];
+
+/* ============ HELPERS ============ */
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function rel(id){return state.relationships[id]||0;}
+function addLog(msg){state.log.unshift(msg); state.log=state.log.slice(0,40);}
+function npcsAt(locId){return Object.entries(NPCS).filter(([id,n])=>n.loc===locId).map(([id,n])=>({id,...n}));}
+
+/* ============ RENDER ============ */
+function render(){
+  renderTicker();
+  renderHud();
+  renderDayBar();
+  renderLocations();
+  renderActivities();
+  renderMR();
+  renderEventLog();
+}
+
+function renderTicker(){
+  const lines = [
+    "Chacha shouts: fresh cha, tomorrow's prices going up again!",
+    "Rickshaw bell rings somewhere down the lane.",
+    "A crow argues with another crow over a samosa.",
+    "Someone's phone plays a cricket commentary too loud.",
+    "The mess boy asks, again, when the light bill will be paid.",
+  ];
+  document.getElementById("ticker").innerHTML = "<b>Tea Stall Ticker:</b> " + lines[(state.day+state.phase)%lines.length];
+}
+
+function statBar(pct,cls){return `<div class="bar"><div class="${cls}" style="width:${clamp(pct,0,100)}%"></div></div>`;}
+
+function renderHud(){
+  const s=state.stats;
+  document.getElementById("hud").innerHTML = `
+    <div class="stat"><div class="label">Money</div><div class="val money">৳${s.money}</div></div>
+    <div class="stat"><div class="label">Energy</div><div class="val">${s.energy}</div>${statBar(s.energy,'energy-fill')}</div>
+    <div class="stat"><div class="label">Hunger</div><div class="val">${s.hunger}</div>${statBar(s.hunger,'hunger-fill')}</div>
+    <div class="stat"><div class="label">Stress</div><div class="val">${s.stress}</div>${statBar(s.stress,'stress-fill')}</div>
+  `;
+}
+
+function renderDayBar(){
+  document.getElementById("daylabel").innerText = `Day ${state.day}`;
+  document.getElementById("phaseTrack").innerHTML = PHASES.map((p,i)=>{
+    let cls = i===state.phase? "active" : (i<state.phase? "done":"");
+    return `<div class="phase-chip ${cls}">${p}</div>`;
+  }).join("");
+}
+
+function renderLocations(){
+  document.getElementById("locList").innerHTML = Object.entries(LOCATIONS).map(([id,l])=>{
+    const here = id===state.location ? "here":"";
+    return `<button class="${here}" onclick="travel('${id}')">${l.name}${here?" ★":""}</button>`;
+  }).join("");
+}
+
+function renderMR(){
+  const box = document.getElementById("mrLog");
+  if(state.marketResearch.length===0){ box.innerHTML="<div style='font-size:0.75rem;color:#7fa89a'>Nothing discovered yet. Talk to people around town.</div>"; return; }
+  box.innerHTML = state.marketResearch.map(e=>`<div class="mr-entry"><div class="tag">${e.tag}</div>${e.text}</div>`).join("");
+}
+
+function renderEventLog(){
+  document.getElementById("eventLog").innerHTML = state.log.map(l=>`<div>${l}</div>`).join("");
+}
+
+function renderActivities(){
+  const loc = LOCATIONS[state.location];
+  document.getElementById("locHeader").innerText = loc.name;
+  const here = npcsAt(state.location);
+  document.getElementById("npcHere").innerText = here.length? "People here: "+here.map(n=>n.emoji+" "+n.name).join("  ") : "No one of note here right now.";
+
+  const acts = getActivities();
+  document.getElementById("activities").innerHTML = acts.map(a=>`
+    <div class="activity">
+      <div class="a-title">${a.title}</div>
+      <div class="a-desc">${a.desc}</div>
+      <div class="a-costs">${a.costLabel}</div>
+      <button class="btn" ${a.disabled?"disabled":""} onclick="${a.action}">${a.btnLabel||"Do this"}</button>
+    </div>
+  `).join("") || "<div style='font-size:0.8rem;color:#7fa89a'>Nothing to do here right now.</div>";
+}
+
+/* ============ ACTIVITY DEFINITIONS ============ */
+function getActivities(){
+  const loc = state.location, ph = state.phase;
+  let acts = [];
+
+  // Rest / eat always available
+  acts.push({
+    title:"Eat a cheap meal", desc:"Rice, dal, maybe an egg. Fills you up.",
+    costLabel:"Cost: ৳40 · +0 energy", btnLabel:"Eat (৳40)",
+    disabled: state.stats.money<40,
+    action:"doEat()"
+  });
+
+  if(ph!==2 || loc==="mess"){
+    acts.push({
+      title:"Rest a while", desc:"Recover some energy, lower stress a little.",
+      costLabel:"Advances to next phase · +20 energy, -8 stress",
+      action:"doRest()"
+    });
+  }
+
+  // Talk to NPCs here
+  npcsAt(loc).forEach(n=>{
+    acts.push({
+      title:`Talk to ${n.emoji} ${n.name}`, desc:n.role+` · Relationship: ${rel(n.id)}`,
+      costLabel:"Advances to next phase",
+      btnLabel:"Talk", action:`openDialogue('${n.id}')`
+    });
+  });
+
+  // Location + phase specific
+  if(loc==="university" && ph===0){
+    acts.push({
+      title:"Attend Class", desc:"Business & Finance lecture. Builds knowledge, affects grade.",
+      costLabel:"Cost: -15 energy · +Knowledge",
+      action:"doClass()"
+    });
+  }
+
+  if(loc==="university" && ph===1){
+    acts.push({
+      title:"Tutoring Job (per session)", desc:"Tutor a junior in math/business basics.",
+      costLabel:"Cost: -20 energy · Pay: ~৳120-220 (scales with Knowledge)",
+      disabled: state.stats.energy<20,
+      action:"doJob('tutoring')"
+    });
+  }
+
+  if(loc==="street" && ph===1){
+    acts.push({
+      title:"Delivery Run", desc:"Deliver packages across the neighborhood by cycle.",
+      costLabel:"Cost: -25 energy · Pay: ৳150 flat",
+      disabled: !state.flags.deliveryJobUnlocked || state.stats.energy<25,
+      action:"doJob('delivery')"
+    });
+    if(!state.flags.deliveryJobUnlocked){
+      acts[acts.length-1].desc += " (Ask Jamil Bhai about delivery work first.)";
+    }
+  }
+
+  if(loc==="teastall" && ph===1){
+    acts.push({
+      title:"Help at the Tea Stall", desc:"Wash cups, serve customers, build local reputation.",
+      costLabel:"Cost: -15 energy · Pay: ৳90",
+      disabled: !state.flags.teastallJobUnlocked || state.stats.energy<15,
+      action:"doJob('teastall')"
+    });
+    if(!state.flags.teastallJobUnlocked){
+      acts[acts.length-1].desc += " (Ask Chacha for work first.)";
+    }
+  }
+
+  if(loc==="market" && ph===1){
+    acts.push({
+      title:"Do Market Research", desc:"Wander the bazaar, observe what people buy and complain about.",
+      costLabel:"Cost: -10 energy",
+      action:"doMarketResearch()"
+    });
+  }
+
+  // Business
+  if((loc==="mess"||loc==="university") && ph===2){
+    if(!state.business && state.marketResearch.length>0){
+      acts.push({
+        title:"Start Tutoring Business", desc:"Turn your market research into a real side business.",
+        costLabel:"Requires ≥1 Market Research entry · Free to start",
+        action:"startBusiness()"
+      });
+    }
+    if(state.business){
+      acts.push({
+        title:"Manage Tutoring Business", desc:"Adjust price, marketing, and quality effort. Simulates the day's demand.",
+        costLabel:"Cost: -20 energy",
+        disabled: state.stats.energy<20,
+        action:"openBusiness()"
+      });
+    }
+  }
+
+  return acts;
+}
+
+/* ============ ACTIONS ============ */
+function travel(id){ state.location=id; render(); }
+
+function advancePhase(){
+  if(state.phase<2){ state.phase++; }
+  else { nightResolution(); state.phase=0; state.day++; state.ateToday=false; }
+  render();
+}
+
+function doEat(){
+  if(state.stats.money<40) return;
+  state.stats.money-=40;
+  state.stats.hunger=clamp(state.stats.hunger-35,0,100);
+  state.ateToday=true;
+  addLog("You ate a simple meal. Hunger eased.");
+  render();
+}
+
+function doRest(){
+  state.stats.energy=clamp(state.stats.energy+20,0,100);
+  state.stats.stress=clamp(state.stats.stress-8,0,100);
+  addLog("You rested a while.");
+  advancePhase();
+}
+
+function doClass(){
+  state.stats.energy=clamp(state.stats.energy-15,0,100);
+  const gain = 3 + Math.floor(state.reputation.academic/20);
+  state.knowledge.business+=gain;
+  state.knowledge.finance+=Math.floor(gain/2);
+  state.reputation.academic=clamp(state.reputation.academic+2,-100,100);
+  addLog(`Attended class. +${gain} Business knowledge.`);
+  advancePhase();
+}
+
+function doJob(type){
+  const jobs = {
+    tutoring:{energy:20, base:120, know:true, repKey:"academic"},
+    delivery:{energy:25, base:150, know:false, repKey:"local"},
+    teastall:{energy:15, base:90, know:false, repKey:"local"},
+  };
+  const j = jobs[type];
+  if(state.stats.energy<j.energy) return;
+  state.stats.energy=clamp(state.stats.energy-j.energy,0,100);
+  let pay = j.base;
+  if(j.know) pay += Math.floor(state.knowledge.business*4);
+  state.stats.money += pay;
+  state.reputation[j.repKey]=clamp(state.reputation[j.repKey]+2,-100,100);
+  addLog(`Worked (${type}). Earned ৳${pay}.`);
+  advancePhase();
+}
+
+function doMarketResearch(){
+  state.stats.energy=clamp(state.stats.energy-10,0,100);
+  const pool = [
+    {tag:"Commerce", text:"Students want cheaper printing/photocopy access near campus."},
+    {tag:"Logistics", text:"Deliveries are slow because riders don't know shortcut lanes."},
+    {tag:"Food", text:"Hostel students crave affordable home-style tiffin service."},
+  ];
+  const already = state.marketResearch.map(e=>e.text);
+  const pick = pool.find(p=>!already.includes(p.text));
+  if(pick){
+    state.marketResearch.push(pick);
+    addLog(`New market insight: "${pick.text}"`);
+  } else {
+    addLog("You didn't spot anything new in the bazaar today.");
+  }
+  advancePhase();
+}
+
+function openDialogue(npcId){
+  const npc = NPCS[npcId];
+  const tree = DIALOGUES[npcId];
+  const node = tree[0];
+  const modal = document.getElementById("modalRoot");
+  modal.innerHTML = `
+    <div class="modal-bg">
+      <div class="modal">
+        <h2>${npc.emoji} ${npc.name}</h2>
+        <div class="npc-tag">${npc.role} · Relationship ${rel(npcId)}</div>
+        <div class="dline">${node.text}</div>
+        ${node.opts.map((o,i)=>`<button class="opt" onclick="chooseDialogue('${npcId}',${i})">${o.t}</button>`).join("")}
+        <button class="btn secondary" onclick="closeModal()" style="margin-top:6px;">Leave</button>
+      </div>
+    </div>`;
+}
+
+function chooseDialogue(npcId,idx){
+  const opt = DIALOGUES[npcId][0].opts[idx];
+  const eff = opt.eff;
+  if(eff.rel) state.relationships[npcId]=clamp(rel(npcId)+eff.rel,-100,100);
+  if(eff.know) Object.entries(eff.know).forEach(([k,v])=>state.knowledge[k]+=v);
+  if(eff.stat) Object.entries(eff.stat).forEach(([k,v])=>state.stats[k]=clamp(state.stats[k]+v,0,100));
+  if(eff.flag) state.flags[eff.flag]=true;
+  if(eff.mr){
+    const exists = state.marketResearch.some(e=>e.text===eff.mr.text);
+    if(!exists){ state.marketResearch.push(eff.mr); addLog(`New market insight: "${eff.mr.text}"`); }
+  }
+  addLog(`Talked with ${NPCS[npcId].name}.`);
+  closeModal();
+  advancePhase();
+}
+
+function startBusiness(){
+  state.business = {
+    name:"Zero Point Tutoring",
+    price:150, quality:50, marketingReach:10, capital:0,
+    totalRevenue:0, profitableDays:0
+  };
+  addLog("You launched Zero Point Tutoring, a math & business tutoring side-business!");
+  render();
+}
+
+function openBusiness(){
+  const b = state.business;
+  const modal = document.getElementById("modalRoot");
+  modal.innerHTML = `
+    <div class="modal-bg">
+      <div class="modal">
+        <h2>📚 ${b.name}</h2>
+        <div class="npc-tag">Capital: ৳${b.capital} · Profitable days: ${b.profitableDays}</div>
+        <div class="row"><label>Price ৳${b.price}</label><input type="range" min="50" max="400" value="${b.price}" oninput="b_price(this.value)"></div>
+        <div class="row"><label>Quality ${b.quality}</label><input type="range" min="0" max="100" value="${b.quality}" oninput="b_quality(this.value)"></div>
+        <div class="row"><label>Marketing ${b.marketingReach}</label><input type="range" min="0" max="100" value="${b.marketingReach}" oninput="b_marketing(this.value)"></div>
+        <div style="font-size:0.72rem;color:#9fc2b5;margin-top:6px;">Higher quality/marketing cost more energy today but raise demand. Price too high hurts fit; too low hurts revenue.</div>
+        <div class="btn-row" style="margin-top:12px;">
+          <button class="btn" onclick="runBusinessDay()">Run Today's Session</button>
+          <button class="btn secondary" onclick="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>`;
+}
+function b_price(v){state.business.price=+v;}
+function b_quality(v){state.business.quality=+v;}
+function b_marketing(v){state.business.marketingReach=+v;}
+
+function runBusinessDay(){
+  const b = state.business;
+  state.stats.energy=clamp(state.stats.energy-20,0,100);
+  const priceFit = clamp(1 - Math.abs(b.price-180)/300, 0.1, 1);
+  const qualityFactor = 0.5 + (b.quality/100);
+  const marketingMult = 1 + (b.marketingReach/100);
+  const baseMarket = 8 + Math.floor(state.reputation.academic/10);
+  const competitorPressure = 1.5;
+  let demand = baseMarket*priceFit*qualityFactor*marketingMult - competitorPressure;
+  demand = Math.max(0, Math.round(demand));
+  const revenue = demand*b.price;
+  const cost = Math.round(b.marketingReach*1.5 + b.quality*0.5);
+  const cashflow = revenue-cost;
+  b.capital += cashflow;
+  b.totalRevenue += revenue;
+  state.stats.money += cashflow;
+  if(cashflow>0) b.profitableDays++;
+  state.reputation.business = clamp(state.reputation.business + (cashflow>0?2:-1), -100, 100);
+  addLog(`Business day: ${demand} students, revenue ৳${revenue}, costs ৳${cost}, net ৳${cashflow}.`);
+  closeModal();
+  advancePhase();
+}
+
+function closeModal(){ document.getElementById("modalRoot").innerHTML=""; }
+
+/* ============ NIGHT RESOLUTION ============ */
+function nightResolution(){
+  const s = state.stats;
+  // expenses
+  const rentPerDay = 50;
+  const phoneCost = state.day%7===0 ? 100 : 0;
+  s.money -= rentPerDay + phoneCost;
+
+  // hunger/energy
+  s.hunger = clamp(s.hunger + (state.ateToday? -10 : 25), 0, 100);
+  s.energy = clamp(s.energy + 30 - (s.hunger>70?15:0), 0, 100);
+  s.stress = clamp(s.stress + (s.energy<20?10:-4), 0, 100);
+
+  addLog(`Night falls on Day ${state.day}. Rent -৳${rentPerDay}${phoneCost?` , phone -৳${phoneCost}`:""}.`);
+
+  // failure/edge cases
+  if(s.money < -300){
+    addLog("⚠️ Mr. Haque is furious about unpaid rent. You're forced to move to a cheaper, worse mess.");
+    s.stress = clamp(s.stress+15,0,100);
+    s.money = -100; // reset toward a manageable debt after relocation
+  }
+  if(s.stress>=80){
+    addLog("⚠️ Burnout. You're forced to rest tomorrow morning.");
+    state.flags.forcedRest = true;
+  }
+
+  // random event
+  rollEvent();
+
+  // stage check (flavor only in this MVP slice)
+  if(state.business && state.business.profitableDays>=5 && !state.flags.milestoneShown){
+    state.flags.milestoneShown = true;
+    addLog("🎉 Milestone: your tutoring business has been profitable for 5+ days. You've moved from Survival to Startup stage!");
+  }
+}
+
+function rollEvent(){
+  const roll = Math.random();
+  if(roll<0.12){
+    state.stats.money -= 60;
+    addLog("⚡ Random event: sudden rickshaw fare hike ate into your budget (-৳60).");
+  } else if(roll<0.22){
+    state.stats.energy = clamp(state.stats.energy+15,0,100);
+    addLog("☕ Random event: Chacha gave you a free cha and singara. (+15 energy)");
+  } else if(roll<0.28 && state.business){
+    state.business.marketingReach = clamp(state.business.marketingReach+10,0,100);
+    addLog("📣 Random event: a happy student told two friends about your tutoring. (+Marketing reach)");
+  }
+}
+
+/* ============ SAVE / LOAD ============ */
+function openSave(){
+  const modal = document.getElementById("modalRoot");
+  const json = JSON.stringify(state, null, 1);
+  modal.innerHTML = `
+    <div class="modal-bg">
+      <div class="modal">
+        <h2>💾 Save / Load</h2>
+        <div style="font-size:0.78rem;color:#9fc2b5;margin-bottom:8px;">Copy this text to save your game, or paste a previous save below and Load.</div>
+        <textarea id="saveBox">${json}</textarea>
+        <div class="btn-row" style="margin-top:10px;">
+          <button class="btn" onclick="downloadSave()">Download .json</button>
+          <button class="btn secondary" onclick="loadFromBox()">Load from text above</button>
+          <button class="btn secondary" onclick="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>`;
+}
+function downloadSave(){
+  const blob = new Blob([JSON.stringify(state,null,1)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `bangla-entrepreneur-day${state.day}.json`;
+  a.click();
+}
+function loadFromBox(){
+  try{
+    const parsed = JSON.parse(document.getElementById("saveBox").value);
+    state = parsed;
+    addLog("Save loaded.");
+    closeModal();
+    render();
+  }catch(e){ alert("Couldn't read that save file."); }
+}
+
+/* ============ INIT ============ */
+render();
+</script>
 </body>
 </html>

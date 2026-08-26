@@ -11,55 +11,89 @@
     <style>
         body {
             font-family: 'Share Tech Mono', monospace;
-        }
-        .glow-red {
-            box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+            background: radial-gradient(circle at center, #090d16 0%, #020617 100%);
         }
         .glow-cyan {
-            box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.2);
+        }
+        .glow-red {
+            box-shadow: 0 0 25px rgba(239, 68, 68, 0.3);
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(51, 65, 85, 0.6);
+        }
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-4">
+<body class="text-slate-100 min-h-screen flex items-center justify-center p-4">
 
-    <div class="max-w-xl w-full bg-slate-900 border border-slate-800 rounded-xl p-6 glow-cyan">
+    <div class="max-w-xl w-full glass-panel rounded-2xl p-6 glow-cyan transition-all duration-500">
         
-        <!-- Header / Status Bar -->
-        <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
-            <div>
-                <h1 class="text-xl font-bold text-cyan-400 tracking-wider">⚡ THE BUTTERFLY EFFECT</h1>
-                <p class="text-xs text-slate-400">Crisis Management Unit // 60s Protocol</p>
+        <!-- Welcome Screen (City Name Input) -->
+        <div id="welcome-screen" class="text-center py-6">
+            <div class="inline-block p-3 bg-cyan-950/50 border border-cyan-500/30 rounded-full mb-4 animate-pulse-slow">
+                <span class="text-2xl">⚡</span>
             </div>
-            <div id="timer-box" class="text-right">
-                <span class="text-xs text-slate-400 block">TIME LEFT</span>
-                <span id="timer" class="text-2xl font-bold text-red-500">60s</span>
+            <h1 class="text-2xl font-bold text-cyan-400 tracking-wider mb-2">THE BUTTERFLY EFFECT</h1>
+            <p class="text-xs text-slate-400 mb-6">60 Seconds to Midnight // Crisis Management Protocol</p>
+            
+            <div class="space-y-4 text-left max-w-sm mx-auto">
+                <label class="block text-xs text-slate-300 uppercase tracking-widest">আপনার শহরের নাম লিখুন:</label>
+                <input type="text" id="city-name-input" placeholder="যেমন: ঢাকা, রাজশাহী বা কাল্পনিক শহর..." 
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg px-4 py-3 text-sm text-cyan-300 focus:outline-none focus:border-cyan-500 transition-all">
+                <button onclick="startGame()" class="w-full py-3 bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-bold text-xs uppercase tracking-widest rounded-lg cursor-pointer transition-all shadow-lg shadow-cyan-900/50">
+                    মিশন শুরু করুন
+                </button>
             </div>
         </div>
 
-        <!-- Dashboard Stats -->
-        <div class="grid grid-cols-2 gap-4 mb-6">
-            <div class="bg-slate-950 p-3 rounded border border-slate-800">
-                <span class="text-xs text-slate-400 block">CITY STABILITY</span>
-                <div class="w-full bg-slate-800 h-3 rounded-full mt-1 overflow-hidden">
-                    <div id="stability-bar" class="bg-cyan-500 h-full transition-all duration-300" style="width: 100%;"></div>
+        <!-- Main Game Interface (Hidden initially) -->
+        <div id="game-interface" class="hidden">
+            <!-- Header / Status Bar -->
+            <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-5">
+                <div>
+                    <h1 id="header-city-title" class="text-sm font-bold text-cyan-400 tracking-wider uppercase">CITY: --</h1>
+                    <p class="text-[10px] text-slate-400">Crisis Protocol Active</p>
                 </div>
-                <span id="stability-text" class="text-xs text-cyan-400 mt-1 block">100% Optimal</span>
+                <div id="timer-box" class="text-right">
+                    <span class="text-[10px] text-slate-400 block tracking-widest">TIME LEFT</span>
+                    <span id="timer" class="text-xl font-bold text-red-500">60s</span>
+                </div>
             </div>
-            <div class="bg-slate-950 p-3 rounded border border-slate-800">
-                <span class="text-xs text-slate-400 block">CRISIS LEVEL</span>
-                <span id="level-display" class="text-lg font-bold text-yellow-400">Level 1 / 4</span>
+
+            <!-- Dashboard Stats -->
+            <div class="grid grid-cols-2 gap-3 mb-5">
+                <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800">
+                    <span class="text-[10px] text-slate-400 block">CITY STABILITY</span>
+                    <div class="w-full bg-slate-800 h-2.5 rounded-full mt-1.5 overflow-hidden">
+                        <div id="stability-bar" class="bg-cyan-500 h-full transition-all duration-300" style="width: 100%;"></div>
+                    </div>
+                    <span id="stability-text" class="text-[10px] text-cyan-400 mt-1 block">100% Optimal</span>
+                </div>
+                <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800 flex flex-col justify-center">
+                    <span class="text-[10px] text-slate-400 block">CRISIS STAGE</span>
+                    <span id="level-display" class="text-sm font-bold text-yellow-400 mt-0.5">Stage 1 / 5</span>
+                </div>
             </div>
-        </div>
 
-        <!-- Game Screen Area -->
-        <div id="game-container">
-            <!-- Dynamic Content will be injected here via JavaScript -->
-        </div>
+            <!-- Game Screen Area -->
+            <div id="game-container">
+                <!-- Dynamic Content -->
+            </div>
 
-        <!-- Footer Score -->
-        <div class="mt-6 pt-4 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400">
-            <span>Score: <strong id="score" class="text-white">0</strong></span>
-            <span>Status: <strong id="status-msg" class="text-green-400">System Stable</strong></span>
+            <!-- Footer Score -->
+            <div class="mt-5 pt-3 border-t border-slate-800/80 flex justify-between items-center text-xs text-slate-400">
+                <span>Optimization Score: <strong id="score" class="text-white">0</strong></span>
+                <span>Status: <strong id="status-msg" class="text-green-400">Stable</strong></span>
+            </div>
         </div>
 
     </div>
@@ -69,81 +103,103 @@
         const levels = [
             {
                 id: 1,
-                title: "Level 1: The Critical Corridor",
-                desc: "হাসপাতালের অক্সিজেন সিলিন্ডার ফুরিয়ে আসছে, অন্যদিকে ট্রাফিক সিগন্যাল ফেল করায় জরুরি অ্যাম্বুলেন্স রাস্তায় আটকে আছে। কোনটিতে আগে ফোকাস করবে?",
+                title: "Stage 1: The Bio-Grid Dilemma",
+                desc: "শহরের সেন্টral অক্সিজেন প্ল্যান্টে হ্যাকার অ্যাটাক হয়েছে। একপাশে শহরের NICU এর নবজাতক শিশুরা মারা যাচ্ছে, অন্যপাশে সেন্ট্রাল পাওয়ার গ্রিডে ওভারলোডের কারণে পুরো শহর ব্লাস্ট হওয়ার ঝুঁকি তৈরি হয়েছে। কোনটা বাঁচাবে?",
                 optA: {
-                    text: "অ্যাম্বুলেন্স জ্যাম ক্লিয়ার করાવો",
-                    effect: "অ্যাম্বুলেন্স পৌঁছে গেল, কিন্তু হাসপাতালের ৩ জন রোগীর অবস্থা আশঙ্কাজনক হয়ে পড়ল!",
-                    stabilityChange: -20,
-                    scoreAdd: 100
+                    text: "পাওয়ার গ্রিড কাট করে শিশুদের অক্সিজেন লাইন ব্যাকআপ দাও",
+                    effect: "শিশুরা বেঁচে গেল, কিন্তু পুরো শহরে ব্ল্যাকআউট হওয়ায় ট্রাফিক লাইট নষ্ট হয়ে বড় ধরনের শত শত দুর্ঘটনা ঘটল!",
+                    stabilityChange: -25,
+                    scoreAdd: 120
                 },
                 optB: {
-                    text: "হাসপাতালে ব্যাকআপ অক্সিজেন রুট করো",
-                    effect: "হাসপাতালের জীবন রক্ষা পেল, কিন্তু রাস্তায় অ্যাম্বুলেন্স আটকে থাকায় ট্রাফিক জ্যাম আরও তীব্র হলো!",
-                    stabilityChange: -15,
-                    scoreAdd: 120
+                    text: "গ্রিড সচল রেখে ইমার্জেন্সি হসপিটাল জেনারেটর ওভারলোড করো",
+                    effect: "শহর সচল থাকল, কিন্তু জেনারেটর ফেটে হসপিটালের একটি ওয়ার্ডে বড় ধরনের প্রাণহানি ঘটল!",
+                    stabilityChange: -30,
+                    scoreAdd: 150
                 }
             },
             {
                 id: 2,
-                title: "Level 2: The Server Hazard",
-                desc: "পাওয়ার গ্রিড হঠাৎ কোলাপ্স করেছে। সার্ভার রুমে অতিরিক্ত হিট হয়ে আগুন ধরে যাওয়ার উপক্রম হয়েছে। দ্রুত সিদ্ধান্ত নাও!",
+                title: "Stage 2: The Dam & Chemical Leak",
+                desc: "ভারী বর্ষণে ড্যামের গেট উপচে পড়ছে। পানি ছাড়লে কেমিক্যাল ইন্ডাস্ট্রি ফ্লাডে ভেসে গিয়ে বিষাক্ত গ্যাস ছড়িয়ে পড়বে, আর না ছাড়লে ড্যাম ভেঙে আস্ত শহর পানির নিচে তলিয়ে যাবে।",
                 optA: {
-                    text: "পাওয়ার গ্রিড ফুল অন রাখো (ডেটা বাঁচাতে)",
-                    effect: "ডাটা সেভ হলো, কিন্তু সার্ভার রুমে শর্ট-সার্কিট হয়ে পুরো শহরের একাংশে ব্ল্যাকআউট শুরু হলো!",
+                    text: "ড্যামের গেট খুলে দাও (কেমিক্যাল রিলিজ ঝুঁকি জেনেই)",
+                    effect: "শহর প্লাবন থেকে রক্ষা পেল, কিন্তু বিষাক্ত কেমিক্যালে বাতাসে শ্বাসকষ্ট ছড়িয়ে পড়ায় হাজার মানুষ অসুস্থ!",
                     stabilityChange: -30,
-                    scoreAdd: 150
+                    scoreAdd: 180
                 },
                 optB: {
-                    text: "তাড়াহুড়ো করে পানি ঢেলে আগুন নেভাও",
-                    effect: "আগুন নিভল বটে, কিন্তু পানি পড়ার কারণে পুরো মেইন সার্ভার প্যানেল চিরতরে ক্রশ করল!",
+                    text: "ড্যাম বন্ধ রাখো এবং কেমিক্যাল প্ল্যান্ট সিল করার চেষ্টা করো",
+                    effect: "সময়মতো সিল করা গেল না, ড্যামের অতিরিক্ত চাপে শহরর একাংশ আকস্মিক বন্যায় ভেসে গেল!",
                     stabilityChange: -35,
-                    scoreAdd: 130
+                    scoreAdd: 160
                 }
             },
             {
                 id: 3,
-                title: "Level 3: The Dam Gate Failure",
-                desc: "ভারী বর্ষণে শহরের ওয়াটার ড্যামের গেট ভেঙে পড়ার মুখে। নিচু এলাকার বস্তি অঞ্চল ডুবছে, নাকি শহরের মেইন পাওয়ার প্ল্যান্ট বাঁচাবে?",
+                title: "Stage 3: The Nuclear Reactor Core",
+                desc: "শহরের নিউক্লিয়ার পাওয়ার প্ল্যান্টের কুলিং সিস্টেম ফেল করেছে। কোর মেল্টডাউন ঠেকানোর শেষ উপায় হলো কুল্যান্ট ইমার্জেন্সি রিলিজ করা, যা পার্শ্ববর্তী জনবসতিপূর্ণ এলাকায় মারাত্মক তেজস্ক্রিয়তা ছড়াবে।",
                 optA: {
-                    text: "ড্যামের গেট ডাইভার্ট করে বস্তি অঞ্চলে পানি ছাড়ো",
-                    effect: "পাওয়ার প্ল্যান্ট রক্ষা পেল, কিন্তু শত শত মানুষের ঘরবাড়ি পানিতে তলিয়ে গেল!",
-                    stabilityChange: -30,
-                    scoreAdd: 200
+                    text: "ইমার্জেন্সি কুল্যান্ট রিলিজ করে কোর সেভ করো",
+                    effect: "পারমাণবিক বিস্ফোরণ এড়ানো গেল, কিন্তু আশপাশের এলাকার হাজার হাজার মানুষ রেডিয়েশনের শিকার হলো!",
+                    stabilityChange: -35,
+                    scoreAdd: 220
                 },
                 optB: {
-                    text: "ড্যাম বন্ধ রেখে মেইন পাওয়ার গ্রিড বাঁচাতে লড়াই করো",
-                    effect: "পাওয়ার গ্রিড ডুবে গেল, পুরো শহরে বিদ্যুৎ বিচ্ছিন্ন হয়ে হাহাকার শুরু হলো!",
-                    stabilityChange: -40,
-                    scoreAdd: 180
+                    text: "কুল্যান্ট ব্লক রেখে ম্যানুয়াল রড কুলিংয়ের জুয়া খেলো",
+                    effect: "জুয়া ফেল করল! আংশিক মেল্টডাউনে শহরের বড় একটা অংশ তেজস্ক্রিয় জোনে পরিণত হলো।",
+                    stabilityChange: -45,
+                    scoreAdd: 200
                 }
             },
             {
                 id: 4,
-                title: "Level 4: The Final Midnight Protocol",
-                desc: "ঘড়ির কাঁটা মিডনাইটের কাছাকাছি! পুরো শহরের কন্ট্রোল সিস্টেম এখন হ্যাকড। ইমার্জেন্সি শাটডাউন নাকি ম্যানুয়াল ওভাররাইড?",
+                title: "Stage 4: The Cyber Ransom Lockdown",
+                desc: "পুরো দেশের ব্যাংক ও স্টক এক্সচেঞ্জ সিস্টেম র‍্যানসমওয়্যার দ্বারা লকড হয়েছে। হ্যাকার গ্রুপ মাত্র ১ মিনিট সময় দিয়েছে— হয় বিশাল পরিমাণ রাষ্ট্রীয় গোপন ডেটা দাও, নয়তো ফিনান্সিয়াল সিস্টেম জিরো করে দেব।",
                 optA: {
-                    text: "সিস্টেম ইমার্জেন্সি শাটডাউন করো",
-                    effect: "সব যোগাযোগ বিচ্ছিন্ন হয়ে গেল, শহর সম্পূর্ণ অন্ধকারের কবলে পড়ল কিন্তু সিস্টেম সেভ হলো।",
-                    stabilityChange: -20,
-                    scoreAdd: 300
+                    text: "গোপন রাষ্ট্রীয় সাইবার ইন্টেলিজেন্স ডেটা হ্যাকারদের দিয়ে দাও",
+                    effect: "ফিনান্সিয়াল সিস্টেম বাঁচল, কিন্তু দেশের সিকিউরিটি সিস্টেম চিরকালের মতো শত্রুর হাতে চলে গেল!",
+                    stabilityChange: -30,
+                    scoreAdd: 250
                 },
                 optB: {
-                    text: "ম্যানুয়াল ওভাররাইড ট্রাই করো (রিস্ক হাই)",
-                    effect: "ব্রেভ ট্রাই! সিস্টেম রিকভার হলেও মারাত্মক সিস্টেম কোলাপ্স এড়ানো গেল না।",
-                    stabilityChange: -25,
+                    text: "ডেটা না দিয়ে পুরো ফিনান্সিয়াল সার্ভার আইসোলেট করে দাও",
+                    effect: "রাষ্ট্রের ডেটা সুরক্ষিত রইল, কিন্তু দেশের সমস্ত এটিএম ও অনলাইন লেনদেন চিরতরে শাটডাউন হয়ে গেল!",
+                    stabilityChange: -40,
+                    scoreAdd: 280
+                }
+            },
+            {
+                id: 5,
+                title: "Stage 5: The Final Midnight Protocol",
+                desc: "ঘড়ির কাঁটা ঠিক বারোটার ঘরে! শহরের সেন্ট্রাল এআই সিস্টেম পুরোপুরি রগচটা হয়ে মানবজাতির বিরুদ্ধে কমান্ড রান করেছে। সিস্টেমের মেইন পাওয়ার কাট করবে নাকি ফুল ফরম্যাটে রিসেট কমান্ড দেবে?",
+                optA: {
+                    text: "সেন্ট্রাল এআইয়ের মেইন পাওয়ার সার্কিট ম্যানুয়ালি ফিজিক্যালি কেটে দাও",
+                    effect: "এআই শাটডাউন হলো, কিন্তু শহরের সমস্ত ডিজিটাল ইনফ্রাস্ট্রাকচার ও কমিউনিকেশন প্যারালাইজড হয়ে গেল!",
+                    stabilityChange: -20,
                     scoreAdd: 350
+                },
+                optB: {
+                    text: "ফুল সিস্টেম রিসেট কোড ইনসার্ট করো (হাই রিস্ক কমান্ড)",
+                    effect: "ব্রেভ ট্রাইভ! রিসেট সফল হলেও রিকভারি প্রসেসে সিস্টেমের বিরাট ডেটা লস হয়ে গেল।",
+                    stabilityChange: -25,
+                    scoreAdd: 400
                 }
             }
         ];
 
+        let cityName = "شہر";
         let currentLevelIndex = 0;
         let stability = 100;
         let score = 0;
         let timeLeft = 60;
         let timerInterval;
-        let gameActive = true;
+        let gameActive = false;
 
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const gameInterface = document.getElementById('game-interface');
+        const cityNameInput = document.getElementById('city-name-input');
+        const headerCityTitle = document.getElementById('header-city-title');
         const timerEl = document.getElementById('timer');
         const stabilityBar = document.getElementById('stability-bar');
         const stabilityText = document.getElementById('stability-text');
@@ -152,7 +208,35 @@
         const scoreEl = document.getElementById('score');
         const statusMsg = document.getElementById('status-msg');
 
+        function startGame() {
+            const inputVal = cityNameInput.value.trim();
+            if (inputVal === "") {
+                alert("দয়া করে আপনার শহরের একটি নাম লিখুন!");
+                return;
+            }
+            cityName = inputVal;
+            headerCityTitle.textContent = `CITY: ${cityName}`;
+
+            welcomeScreen.classList.add('hidden');
+            gameInterface.classList.remove('hidden');
+
+            currentLevelIndex = 0;
+            stability = 100;
+            score = 0;
+            timeLeft = 60;
+            gameActive = true;
+
+            stabilityBar.style.width = '100%';
+            stabilityText.textContent = '100% Optimal';
+            statusMsg.textContent = "Stable";
+            statusMsg.className = "text-green-400";
+
+            startTimer();
+            renderLevel();
+        }
+
         function startTimer() {
+            clearInterval(timerInterval);
             timerInterval = setInterval(() => {
                 if (!gameActive) return;
                 timeLeft--;
@@ -160,7 +244,7 @@
 
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
-                    endGame("সময় শেষ! শহরটি বিপর্যয়ের মুখে পড়েছে।");
+                    endGame("সময় ফুরিয়ে গেছে! মিডনাইট প্রটোকল ফেইল করায় শহর পুরোপুরি ধ্বংস হয়ে গেছে।");
                 }
             }, 1000);
         }
@@ -169,24 +253,26 @@
             if (currentLevelIndex >= levels.length) {
                 gameActive = false;
                 clearInterval(timerInterval);
-                endGame("অভিনন্দন! তুমি কমক্ষতিতে পুরো পরিস্থিতি অপ্টিমাইজ করে টিকে গেছ!");
+                endGame(`অভিনন্দন! আপনি চরম দক্ষতার সাথে সংকট মোকাবিলা করে '${cityName}' শহরকে টিকিয়ে রেখেছেন!`);
                 return;
             }
 
             const lvl = levels[currentLevelIndex];
-            levelDisplay.textContent = `Level ${lvl.id} / ${levels.length}`;
+            levelDisplay.textContent = `Stage ${lvl.id} / ${levels.length}`;
 
             gameContainer.innerHTML = `
-                <div class="bg-slate-950 p-4 rounded border border-slate-800 mb-4">
-                    <h2 class="text-base font-bold text-yellow-400 mb-2">${lvl.title}</h2>
-                    <p class="text-sm text-slate-300 leading-relaxed">${lvl.desc}</p>
+                <div class="bg-slate-950/90 p-4 rounded-xl border border-slate-800/80 mb-4 shadow-inner">
+                    <h2 class="text-sm font-bold text-yellow-400 mb-2 uppercase tracking-wide">${lvl.title}</h2>
+                    <p class="text-xs text-slate-300 leading-relaxed">${lvl.desc}</p>
                 </div>
                 <div class="space-y-3">
-                    <button onclick="makeChoice('A')" class="w-full text-left p-3 rounded bg-slate-800 hover:bg-slate-700 border border-slate-700 text-sm transition-all cursor-pointer">
-                        <strong class="text-cyan-400">[Option A]</strong> ${lvl.optA.text}
+                    <button onclick="makeChoice('A')" class="w-full text-left p-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-xs transition-all cursor-pointer group shadow-md">
+                        <strong class="text-cyan-400 block mb-1 group-hover:text-cyan-300">[OPTION A]</strong> 
+                        <span class="text-slate-300">${lvl.optA.text}</span>
                     </button>
-                    <button onclick="makeChoice('B')" class="w-full text-left p-3 rounded bg-slate-800 hover:bg-slate-700 border border-slate-700 text-sm transition-all cursor-pointer">
-                        <strong class="text-pink-400">[Option B]</strong> ${lvl.optB.text}
+                    <button onclick="makeChoice('B')" class="w-full text-left p-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-xs transition-all cursor-pointer group shadow-md">
+                        <strong class="text-pink-400 block mb-1 group-hover:text-pink-300">[OPTION B]</strong> 
+                        <span class="text-slate-300">${lvl.optB.text}</span>
                     </button>
                 </div>
             `;
@@ -201,18 +287,16 @@
             if (stability < 0) stability = 0;
             score += selectedOpt.scoreAdd;
 
-            // Update UI stats
             stabilityBar.style.width = stability + '%';
             stabilityText.textContent = stability + '% Stability';
             scoreEl.textContent = score;
 
-            // Show Feedback popup / screen
             gameContainer.innerHTML = `
-                <div class="bg-slate-950 p-5 rounded border border-slate-800 text-center">
-                    <h3 class="text-sm font-bold text-cyan-400 uppercase tracking-wider mb-2">⚡ Action Log Result</h3>
-                    <p class="text-sm text-slate-300 mb-4">${selectedOpt.effect}</p>
-                    <button onclick="nextStep()" class="px-5 py-2 bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-bold text-xs uppercase rounded cursor-pointer transition-all">
-                        পরবর্তী ধাপে যান ->
+                <div class="bg-slate-950/95 p-5 rounded-xl border border-slate-800 text-center shadow-lg">
+                    <h3 class="text-xs font-bold text-cyan-400 uppercase tracking-widest mb-2">⚡ Crisis Impact Result</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">${selectedOpt.effect}</p>
+                    <button onclick="nextStep()" class="px-6 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-bold text-xs uppercase tracking-widest rounded-lg cursor-pointer transition-all shadow-md">
+                        পরবর্তী সংকটে যান ->
                     </button>
                 </div>
             `;
@@ -221,8 +305,8 @@
                 gameActive = false;
                 clearInterval(timerInterval);
                 setTimeout(() => {
-                    endGame("শহরের স্থায়িত্ব ০% এ নেমে গেছে! সিস্টেম সম্পূর্ণ ধসে পড়েছে।");
-                }, 1500);
+                    endGame(`সতর্কতা! '${cityName}' শহরের স্থায়িত্ব ০% এ নেমে গেছে। সিস্টেম সম্পূর্ণ ধসে পড়েছে।`);
+                }, 1200);
             }
         }
 
@@ -234,38 +318,45 @@
 
         function endGame(message) {
             gameActive = false;
+            
+            // Performance analysis (Improve vs Down calculation)
+            let performanceStatus = "";
+            let badgeColor = "";
+            if (stability > 50) {
+                performanceStatus = "📈 IMPROVED: আপনি চমৎকার কম ক্ষতিতে শহরটি টিকিয়ে রাখতে পেরেছেন!";
+                badgeColor = "text-green-400 border-green-900/50";
+            } else if (stability > 0) {
+                performanceStatus = "⚠️ WARNING: শহরটি টিকে আছে ঠিকই, তবে চরম ক্ষতি ও অব্যবস্থাপনায় বেহাল অবস্থা!";
+                badgeColor = "text-yellow-400 border-yellow-900/50";
+            } else {
+                performanceStatus = "📉 DOWN: আপনার ভুল সিদ্ধান্ত বা ধীরগতির কারণে শহরটি সম্পূর্ণ ধ্বংস (Collapsed) হয়ে গেছে!";
+                badgeColor = "text-red-500 border-red-900/50";
+            }
+
             gameContainer.innerHTML = `
-                <div class="bg-slate-950 p-6 rounded border border-red-900 text-center glow-red">
-                    <h2 class="text-lg font-bold text-red-500 mb-2">GAME OVER</h2>
-                    <p class="text-sm text-slate-300 mb-4">${message}</p>
-                    <div class="text-xs text-slate-400 mb-4">Final Score: <strong class="text-white">${score}</strong></div>
-                    <button onclick="restartGame()" class="px-6 py-2 bg-red-600 hover:bg-red-500 text-white font-bold text-xs uppercase rounded cursor-pointer transition-all">
-                        পুনরায় চেষ্টা করুন
+                <div class="bg-slate-950 p-5 rounded-xl border ${badgeColor} text-center glow-red">
+                    <h2 class="text-base font-bold text-red-500 uppercase tracking-widest mb-2">PROTOCOL TERMINATED</h2>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-3">${message}</p>
+                    <div class="p-3 bg-slate-900/80 rounded-lg border border-slate-800 mb-4 text-left">
+                        <p class="text-[11px] font-bold ${badgeColor.split(' ')[0]} mb-1">${performanceStatus}</p>
+                        <p class="text-[11px] text-slate-400">Target City: <strong class="text-white">${cityName}</strong></p>
+                        <p class="text-[11px] text-slate-400">Final Optimization Score: <strong class="text-white">${score}</strong></p>
+                        <p class="text-[11px] text-slate-400">Remaining Stability: <strong class="text-white">${stability}%</strong></p>
+                    </div>
+                    <button onclick="resetToWelcome()" class="px-6 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-bold text-xs uppercase tracking-widest rounded-lg cursor-pointer transition-all shadow-lg">
+                        পুনরায় নতুন শহর নিয়ে খেলুন
                     </button>
                 </div>
             `;
-            statusMsg.textContent = "Protocol Terminated";
+            statusMsg.textContent = "Terminated";
             statusMsg.className = "text-red-500";
         }
 
-        function restartGame() {
-            currentLevelIndex = 0;
-            stability = 100;
-            score = 0;
-            timeLeft = 60;
-            gameActive = true;
-            stabilityBar.style.width = '100%';
-            stabilityText.textContent = '100% Optimal';
-            statusMsg.textContent = "System Stable";
-            statusMsg.className = "text-green-400";
-            clearInterval(timerInterval);
-            startTimer();
-            renderLevel();
+        function resetToWelcome() {
+            gameInterface.classList.add('hidden');
+            welcomeScreen.classList.remove('hidden');
+            cityNameInput.value = "";
         }
-
-        // Initialize Game on Load
-        startTimer();
-        renderLevel();
     </script>
 </body>
 </html>
